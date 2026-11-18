@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥑</text></svg>">
+<title>Pure Bistro Меню и аллергены</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Golos+Text:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#FFFFFF; --surface:#F6F4F0; --surface-2:#EDE9E2; --ink:#201A16; --muted:#6F665E; --line:#E4DFD7; --line-strong:#CFC7BC;
+  --accent:#3B2A22; --accent-ink:#FFFFFF; --accent-soft:#EFE7DF;
+  --good:#2E7D4F; --good-soft:#E3F2E8; --bad:#BF4538; --bad-soft:#F9E5E2; --warn:#B7791F; --warn-soft:#FBF0DC;
+  --c-breakfast:#C27A2C; --c-salad:#4E7C4A; --c-sandwich:#8A5A3C; --c-snack:#A64E7B; --c-main:#8E2F3C; --c-sauce:#3F7A9E;
+  --c-breakfast-soft:#F7EAD9; --c-salad-soft:#E6EFE3; --c-sandwich-soft:#F1E7DF; --c-snack-soft:#F4E4EC; --c-main-soft:#F5E3E5; --c-sauce-soft:#E2EDF3;
+  --shadow:0 10px 30px rgba(32,26,22,.10), 0 2px 6px rgba(32,26,22,.06);
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#151110; --surface:#1F1A17; --surface-2:#2A241F; --ink:#F2EDE6; --muted:#A79E93; --line:#332C26; --line-strong:#4A413A;
+    --accent:#E9DCCB; --accent-ink:#1B140F; --accent-soft:#2E261F;
+    --good:#6CC08F; --good-soft:#1C3227; --bad:#F08B7E; --bad-soft:#3A1F1B; --warn:#E3B05A; --warn-soft:#3A2F1A;
+    --c-breakfast:#F0B061; --c-salad:#8FC085; --c-sandwich:#D2A07B; --c-snack:#E28FBC; --c-main:#E48A97; --c-sauce:#84BCDD;
+    --c-breakfast-soft:#352819; --c-salad-soft:#1F2B1E; --c-sandwich-soft:#2E241D; --c-snack-soft:#33202B; --c-main-soft:#351E22; --c-sauce-soft:#1C2A33;
+    --shadow:0 10px 30px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#151110; --surface:#1F1A17; --surface-2:#2A241F; --ink:#F2EDE6; --muted:#A79E93; --line:#332C26; --line-strong:#4A413A;
+  --accent:#E9DCCB; --accent-ink:#1B140F; --accent-soft:#2E261F;
+  --good:#6CC08F; --good-soft:#1C3227; --bad:#F08B7E; --bad-soft:#3A1F1B; --warn:#E3B05A; --warn-soft:#3A2F1A;
+  --c-breakfast:#F0B061; --c-salad:#8FC085; --c-sandwich:#D2A07B; --c-snack:#E28FBC; --c-main:#E48A97; --c-sauce:#84BCDD;
+  --c-breakfast-soft:#352819; --c-salad-soft:#1F2B1E; --c-sandwich-soft:#2E241D; --c-snack-soft:#33202B; --c-main-soft:#351E22; --c-sauce-soft:#1C2A33;
+  --shadow:0 10px 30px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);-webkit-font-smoothing:antialiased;min-height:100vh}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance;letter-spacing:-.01em}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+
+header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:14px 0 6px}
+.brand h1{font-size:17px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.brand h1 span{color:var(--muted);font-weight:500}
+@media (max-width:420px){.brand h1 span{display:none}}
+.progress{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right}
+.progress b{color:var(--ink);font-weight:600}
+nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:6px 16px 10px;margin:0 -16px}
+nav::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:8px 14px;border-radius:999px;font-weight:500;font-size:14px;color:var(--muted);border:1px solid transparent;transition:background .15s,color .15s}
+.tab:hover{background:var(--surface)}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+
+main{padding:22px 0 60px}
+.lede{color:var(--muted);font-size:15px;max-width:60ch;margin:0 0 18px}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+
+.cat{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--cc);padding:3px 9px;border-radius:999px;background:var(--cs)}
+.cat::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cc)}
+[data-cat="breakfast"]{--cc:var(--c-breakfast);--cs:var(--c-breakfast-soft)}
+[data-cat="salad"]{--cc:var(--c-salad);--cs:var(--c-salad-soft)}
+[data-cat="sandwich"]{--cc:var(--c-sandwich);--cs:var(--c-sandwich-soft)}
+[data-cat="snack"]{--cc:var(--c-snack);--cs:var(--c-snack-soft)}
+[data-cat="main"]{--cc:var(--c-main);--cs:var(--c-main-soft)}
+[data-cat="sauce"]{--cc:var(--c-sauce);--cs:var(--c-sauce-soft)}
+
+.search{width:100%;padding:12px 14px;border:1px solid var(--line-strong);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit;margin-bottom:22px}
+.search::placeholder{color:var(--muted)}
+.group{margin:0 0 30px}
+.group-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.group-head h2{font-size:15px;font-weight:600;color:var(--cc)}
+.group-head .n{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.group-head::after{content:"";flex:1;height:1px;background:var(--line)}
+.item{padding:14px 0;border-bottom:1px solid var(--line);display:grid;gap:8px}
+.item:last-child{border-bottom:0}
+.item h3{font-size:16px;font-weight:600}
+.comp{font-size:15px}
+.comp .k,.where .k{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-right:6px}
+.where{font-size:15px;color:var(--muted)}
+.where b{color:var(--ink);font-weight:500}
+.al{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.al .k{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-right:2px}
+.atag{font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--bad-soft);color:var(--bad);border:1px solid transparent}
+.atag.none{background:var(--good-soft);color:var(--good)}
+.note{display:inline-flex;gap:8px;align-items:flex-start;font-size:14px;background:var(--warn-soft);color:var(--ink);padding:6px 10px;border-radius:8px;width:fit-content;max-width:100%}
+.note::before{content:"!";font-family:var(--display);font-weight:700;color:var(--warn);flex:0 0 auto}
+.empty{color:var(--muted);padding:30px 0;text-align:center}
+.hint{color:var(--muted);font-size:14px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{padding:6px 12px;border-radius:999px;border:1px solid var(--line-strong);font-size:14px;color:var(--muted);background:var(--bg)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip.alc[aria-pressed="true"]{background:var(--bad);border-color:var(--bad);color:#fff}
+
+/* allergen tool */
+.two{display:grid;gap:22px}
+.list{display:grid;gap:6px}
+.list .r{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:10px 12px;border-radius:12px;border:1px solid var(--line);font-size:15px}
+.list .r .who{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end}
+.list .r .who span{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--bad-soft);color:var(--bad)}
+.list .r.ok{border-color:var(--good);background:var(--good-soft)}
+.list .r .c{font-size:12px;color:var(--cc);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-right:8px}
+h2.sec{font-size:15px;font-weight:600;margin:0 0 10px;display:flex;align-items:center;gap:10px}
+h2.sec .n{color:var(--muted);font-family:var(--body);font-weight:500;font-size:13px}
+h2.sec.ok{color:var(--good)}h2.sec.no{color:var(--bad)}
+
+.card{background:var(--surface);border-radius:20px;box-shadow:var(--shadow);padding:28px 24px;min-height:300px;display:flex;flex-direction:column;gap:14px;cursor:pointer;position:relative;border:1px solid var(--line)}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.card .count{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.card h2{font-size:clamp(24px,5.5vw,34px);font-weight:600;line-height:1.15;margin-top:auto}
+.card .front-hint{color:var(--muted);font-size:14px;margin-bottom:auto}
+.card .back{display:flex;flex-direction:column;gap:10px;margin-bottom:auto}
+.card .back .comp{font-size:17px}
+.card[data-side="back"] h2{margin-top:0;font-size:22px}
+.actions{display:flex;gap:10px;margin-top:16px}
+.btn{flex:1;padding:14px 16px;border-radius:14px;font-weight:600;font-size:15px;border:1px solid var(--line-strong);background:var(--bg);transition:transform .08s}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.good{border-color:var(--good);color:var(--good)}
+.btn.bad{border-color:var(--bad);color:var(--bad)}
+.btn[disabled]{opacity:.45;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:4px;background:var(--surface-2);border-radius:2px;overflow:hidden;margin-bottom:22px}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.question{font-family:var(--display);font-size:clamp(18px,4.6vw,24px);font-weight:600;line-height:1.25;margin:0 0 6px}
+.qsub{color:var(--muted);margin:0 0 20px;font-size:15px}
+.quote{background:var(--surface);border-left:3px solid var(--cc,var(--accent));padding:14px 16px;border-radius:0 14px 14px 0;margin:0 0 20px;font-size:17px;line-height:1.45}
+.quote .who{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:4px}
+.options{display:grid;gap:10px}
+.opt{text-align:left;padding:14px 16px;border-radius:14px;border:1px solid var(--line-strong);background:var(--bg);font-size:15px;line-height:1.4;display:flex;gap:12px;align-items:flex-start;transition:border-color .15s,background .15s}
+.opt .key{flex:0 0 22px;height:22px;border-radius:6px;background:var(--surface-2);color:var(--muted);font-size:12px;font-weight:600;display:grid;place-items:center;margin-top:1px}
+.opt:hover:not([disabled]){border-color:var(--ink)}
+.opt[data-state="right"]{border-color:var(--good);background:var(--good-soft)}
+.opt[data-state="wrong"]{border-color:var(--bad);background:var(--bad-soft)}
+.opt[data-state="dim"]{opacity:.5}
+.opt[disabled]{cursor:default}
+.ings{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.ing{padding:9px 14px;border-radius:999px;border:1px solid var(--line-strong);font-size:15px;background:var(--bg);transition:background .12s}
+.ing[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.ing[data-state="right"]{background:var(--good-soft);border-color:var(--good);color:var(--ink)}
+.ing[data-state="wrong"]{background:var(--bad-soft);border-color:var(--bad);color:var(--ink);text-decoration:line-through}
+.ing[data-state="missed"]{background:var(--bg);border:1px dashed var(--good);color:var(--good)}
+.ing[disabled]{cursor:default}
+.feedback{margin-top:18px;padding:16px;border-radius:14px;background:var(--surface);border:1px solid var(--line);display:grid;gap:10px;font-size:15px}
+.feedback .verdict{font-family:var(--display);font-weight:600;font-size:15px}
+.feedback[data-ok="1"] .verdict{color:var(--good)}
+.feedback[data-ok="0"] .verdict{color:var(--bad)}
+.feedback h3{font-size:16px}
+
+.result{text-align:center;padding:20px 0 10px}
+.result .big{font-family:var(--display);font-size:clamp(44px,14vw,72px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.result .big small{font-size:.4em;color:var(--muted);font-weight:600}
+.result p{color:var(--muted);margin:10px auto 22px;max-width:44ch}
+.mistakes{text-align:left;display:grid;gap:10px;margin:0 0 22px}
+.mistakes .m{padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-size:14px;display:grid;gap:4px}
+.mistakes .m b{font-weight:600;font-size:15px}
+.mistakes .m .d{color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 24px}
+.stat{background:var(--surface);border-radius:14px;padding:14px;border:1px solid var(--line)}
+.stat .v{font-family:var(--display);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .l{font-size:12px;color:var(--muted);margin-top:4px}
+.weak{display:grid;gap:8px;margin-bottom:24px}
+.weak .w{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);font-size:15px}
+.weak .w .e{color:var(--bad);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.reset{color:var(--muted);font-size:13px;text-decoration:underline;text-underline-offset:3px}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+@media (max-width:480px){.stat .v{font-size:20px}}
+.brand h1 a.home{color:inherit;text-decoration:none}
+.brand h1 a.home::before{content:"← ";color:var(--muted);font-weight:500}
+.brand h1 a.home:hover{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <h1><a class="home" href="../" title="Все разделы">PURE BISTRO</a> <span>· меню и аллергены</span></h1>
+      <div class="progress" id="progress"></div>
+    </div>
+    <nav role="tablist" id="nav">
+      <button class="tab" role="tab" data-mode="browse">Меню</button>
+      <button class="tab" role="tab" data-mode="allergens">Аллергены</button>
+      <button class="tab" role="tab" data-mode="cards">Карточки</button>
+      <button class="tab" role="tab" data-mode="quiz">Квиз</button>
+      <button class="tab" role="tab" data-mode="guest">Гость спрашивает</button>
+    </nav>
+  </div>
+</header>
+<main><div class="wrap" id="view"></div></main>
+
+<script>
+/* ---------- DATA (из таблицы «Pure bistro состав и аллергены») ---------- */
+const CATS={
+  breakfast:{name:"Завтраки"},salad:{name:"Салаты"},sandwich:{name:"Сендвичи"},snack:{name:"Закуски"},main:{name:"Основные блюда"},sauce:{name:"Соусы"}
+};
+const ALLERGENS=["Глютен","Лактоза","Орехи","Рыба","Морепродукты","Цитрус","Мед","Горчица","Ягоды"];
+const D=[
+ // Завтраки
+ {id:"eggs-muffin",cat:"breakfast",name:"Глазунья на маффине",ings:["Соус бешамель","Бланшированный шпинат","Соте из овощей","Пармезан"],al:["Лактоза","Глютен"]},
+ {id:"omelet",cat:"breakfast",name:"Омлет / скрембл",ings:["Соус бешамель","Соте из овощей","Пармезан"],al:["Лактоза","Глютен"]},
+ {id:"danish",cat:"breakfast",name:"Датский завтрак",ings:["Вареные яйца","Лимонно-укропный крем","Бланшированный шпинат","Соте из овощей","Утренняя булочка","Взбитое масло"],al:["Лактоза","Глютен","Рыба","Орехи","Цитрус"],note:"Рыба и орехи — из взбитого масла (анчоусы, фисташки)"},
+ {id:"oat-sweet",cat:"breakfast",name:"Овсяная каша (сладкая)",ings:["Арахисовый крем","Печеные яблоки","Кешью"],al:["Орехи","Лактоза"]},
+ {id:"oat-mush",cat:"breakfast",name:"Овсяная каша с грибами",ings:["Грибы","Куриный бульон","Вареное яйцо","Пармезан"],al:["Лактоза"],note:"На курином бульоне"},
+ {id:"syrniki-rasp",cat:"breakfast",name:"Сырники с малиновой сгущенкой",ings:["Малиновая сгущенка","Греческий йогурт","Фисташковый крамбл"],al:["Лактоза","Ягоды","Орехи"],note:"Сгущенку можно заменить на карамель"},
+ {id:"syrniki-caramel",cat:"breakfast",name:"Сырники с соленой карамелью",ings:["Малиновая сгущенка","Греческий йогурт","Фисташковый крамбл"],al:["Лактоза","Ягоды","Орехи"],note:"В таблице состав указан как у малиновых (сгущенку можно заменить на карамель) — уточни на кухне"},
+ {id:"hashbrown",cat:"breakfast",name:"Хашбраун",ings:["Перечный крем","Дзадзики","Картофель","Кабачок","Жареное яйцо","Пармезан","Зеленое масло"],al:["Лактоза"]},
+ // Салаты
+ {id:"green",cat:"salad",name:"Зеленый салат",ings:["Романо","Руккола","Песто петрушки","Кабачок","Гуакамоле","Тыквенные семечки","Кунжут"],al:["Орехи"]},
+ {id:"duck-salad",cat:"salad",name:"Салат с уткой",ings:["Романо","Руккола","Соус хойсин","Кунжут","Апельсиновый дрессинг","Батат","Карамелизированная свекла"],al:["Мед","Цитрус","Горчица"],note:"Мед, цитрус и горчица — из апельсинового дрессинга"},
+ {id:"beef-salad",cat:"salad",name:"Салат с говядиной",ings:["Романо","Руккола","Пряная морковь","Арахисовый соус","Говядина","Вяленые томаты","Апельсиновый дрессинг","Миндаль"],al:["Орехи","Горчица","Цитрус","Мед"]},
+ // Сендвичи
+ {id:"avo-toast",cat:"sandwich",name:"Тост с авокадо",ings:["Гуакамоле","Черри","Тыквенные семечки","Кунжут"],al:["Глютен"],note:"Единственная позиция сендвичей без лактозы"},
+ {id:"tuna-sand",cat:"sandwich",name:"Сендвич с тунцом",ings:["Вареное яйцо","Петрушка","Чеснок","Айоли","Романо","Руккола","Лимонно-укропный крем"],al:["Рыба","Лактоза","Цитрус","Глютен"]},
+ {id:"duck-sand",cat:"sandwich",name:"Сендвич с уткой",ings:["Арахисовый соус","Романо","Руккола","Соус хойсин","Апельсиновый дрессинг"],al:["Орехи","Цитрус","Мед","Горчица","Глютен"]},
+ {id:"pork-sand",cat:"sandwich",name:"Сендвич со свининой",ings:["Маринованная красная капуста","Соус маринара","Сыр Чеддер"],al:["Лактоза","Глютен"]},
+ // Закуски
+ {id:"hummus",cat:"snack",name:"Хумус",ings:["Оливковое масло","Кунжут","Паприка","Кумин","Пита"],al:["Глютен"],note:"Глютен — из питы"},
+ {id:"tartar",cat:"snack",name:"Мисо тартар",ings:["Говядина","Ферментированный редис и яблоко","Кешью","Чили","Хоккайдо"],al:["Орехи","Глютен"],note:"Подаётся с мисо майонезом"},
+ {id:"antipasti",cat:"snack",name:"Антипасти",ings:["Салями","Прошутто","Оливки маринованные в апельсине и соевом соусе","Вяленые томаты","Песто-дольче (фундук, мед, пармезан)","Фокачча"],al:["Орехи","Мед","Лактоза","Цитрус","Глютен"]},
+ {id:"vitello",cat:"snack",name:"Вителло тоннато",ings:["Говядина","Соус из тунца","Печеный перец","Каперсы","Фокачча"],al:["Рыба","Глютен"],note:"Рыба — соус из тунца"},
+ // Основные
+ {id:"gnocchi-shrimp",cat:"main",name:"Ньокки с креветками",ings:["Соус маринара","Шпинат","Петрушка"],al:["Морепродукты","Глютен","Лактоза"]},
+ {id:"gnocchi-pros",cat:"main",name:"Ньокки с прошутто",ings:["Соус бешамель","Шпинат","Вяленые томаты"],al:["Лактоза","Глютен"]},
+ {id:"tandoori",cat:"main",name:"Курочка тандури",ings:["Лимонно-укропный крем","Хумус","Соте из овощей","Пита"],al:["Лактоза","Цитрус","Глютен"]},
+ {id:"duck-main",cat:"main",name:"Утка с пюре батата",ings:["Соус хойсин","Грибы","Соус из портвейна","Пармезан"],al:["Лактоза"],note:"Единственное основное без глютена"},
+ // Соусы
+ {id:"orange-dressing",cat:"sauce",name:"Апельсиновый дрессинг",ings:["Апельсиновый фреш","Горчица дижонская и зерновая","Мед","Растительное масло"],where:["Салат с уткой","Салат с говядиной","Сендвич с уткой"],al:["Цитрус","Мед","Горчица"]},
+ {id:"peanut",cat:"sauce",name:"Арахисовый соус",ings:["Арахисовая паста","Домашний майонез","Глутамат натрия","Сахар"],where:["Овсяная каша (сладкая)","Салат с говядиной","Сендвич с уткой"],al:["Орехи","Горчица"],note:"Глутамат натрия — не обязательно говорим"},
+ {id:"marinara",cat:"sauce",name:"Маринара",ings:["Томаты","Лук","Чеснок","Специи","Оливки"],where:["Сендвич со свининой","Ньокки с креветками"],al:[]},
+ {id:"miso-mayo",cat:"sauce",name:"Мисо майонез",ings:["Мисо","Майонез"],where:["Мисо тартар"],al:[]},
+ {id:"rasp-milk",cat:"sauce",name:"Малиновая сгущенка",ings:["Малиновое пюре","Сгущеное молоко"],where:["Сырники с малиновой сгущенкой"],al:["Ягоды","Лактоза"]},
+ {id:"greek",cat:"sauce",name:"Греческий йогурт",ings:["Греческий йогурт","Сливки","Сахарный сироп"],where:["Сырники с малиновой сгущенкой","Сырники с соленой карамелью"],al:["Лактоза"]},
+ {id:"hoisin",cat:"sauce",name:"Хойсин",ings:["Ферментированные бобы","Рисовый уксус","Кунжутное масло","Сахар"],where:["Салат с уткой","Сендвич с уткой","Утка с пюре батата"],al:[]},
+ {id:"bechamel",cat:"sauce",name:"Бешамель",ings:["Масло сливочное","Мука","Молоко с луком","Специи","Мускатный орех"],where:["Глазунья на маффине","Скрембл","Омлет","Ньокки с прошутто","Доп. соте из овощей"],al:["Лактоза","Глютен"],note:"Глютен — из муки; поэтому омлет и глазунья с глютеном"},
+ {id:"butter",cat:"sauce",name:"Взбитое масло",ings:["Взбитое масло","Каперсы","Анчоусы","Оливки","Фисташки"],where:["Датский завтрак"],al:["Орехи","Рыба","Лактоза"]},
+ {id:"lemon-dill",cat:"sauce",name:"Лимонно-укропный крем",ings:["Крем чиз","Укроп","Сливки","Лимонный сок"],where:["Сендвич с тунцом","Курочка тандури"],al:["Цитрус","Лактоза"]}
+];
+const byId=Object.fromEntries(D.map(d=>[d.id,d]));
+const DISHES=D.filter(d=>d.cat!=="sauce");
+
+/* Вопросы гостей — ответы строго по таблице */
+const GUEST=[
+ {q:"У меня аллергия на орехи. Какой завтрак можно?",cat:"breakfast",opts:["Овсяная каша с грибами","Овсяная каша (сладкая)","Сырники с малиновой сгущенкой","Датский завтрак"],a:0,why:"Овсяная каша с грибами — только лактоза. Сладкая каша (арахисовый крем, кешью), сырники (фисташковый крамбл) и датский завтрак (фисташки во взбитом масле) содержат орехи."},
+ {q:"Аллергия на орехи — какой салат посоветуете?",cat:"salad",opts:["Салат с уткой","Зеленый салат","Салат с говядиной","Ни один"],a:0,why:"Салат с уткой — мед, цитрус, горчица; орехов нет. Зеленый салат отмечен орехами (семечки, кунжут), в салате с говядиной — арахисовый соус и миндаль."},
+ {q:"Я не ем глютен. Какой сендвич взять?",cat:"sandwich",opts:["Все сендвичи с глютеном — предложу салат или утку с пюре батата","Тост с авокадо","Сендвич со свининой","Сендвич с уткой"],a:0,why:"Глютен есть во всех сендвичах, включая тост с авокадо. Без глютена: салаты, утка с пюре батата, каши, сырники, хашбраун."},
+ {q:"Без глютена из основных блюд — что есть?",cat:"main",opts:["Утка с пюре батата","Ньокки с прошутто","Курочка тандури","Ньокки с креветками"],a:0,why:"Утка с пюре батата — только лактоза (пармезан). Ньокки — глютен, курочка тандури — пита."},
+ {q:"Мне нельзя лактозу. Какой завтрак?",cat:"breakfast",opts:["Все завтраки содержат лактозу — предложу тост с авокадо или салат","Хашбраун","Овсяная каша с грибами","Глазунья на маффине"],a:0,why:"По таблице лактоза есть во всех завтраках (бешамель, пармезан, йогурт, крем). Без лактозы: тост с авокадо, все салаты, хумус, мисо тартар, вителло тоннато."},
+ {q:"Что у вас без лактозы вообще?",cat:"sandwich",opts:["Тост с авокадо","Хашбраун","Сендвич со свининой","Ньокки с прошутто"],a:0,why:"Тост с авокадо — только глютен. Хашбраун — лактоза, сендвич со свининой — чеддер, ньокки с прошутто — бешамель."},
+ {q:"У меня аллергия на рыбу. Вителло тоннато можно?",cat:"snack",opts:["Нет — там соус из тунца","Да, это говядина","Да, если без каперсов","Можно, рыба только в фокачче"],a:0,why:"Вителло тоннато — говядина, соус из тунца, печеный перец, каперсы, фокачча. Аллергены: рыба, глютен."},
+ {q:"В хумусе есть глютен?",cat:"snack",opts:["Да — подаётся с питой","Нет, хумус без глютена","Только в паприке","Есть, из кунжута"],a:0,why:"Хумус — оливковое масло, кунжут, паприка, кумин, пита. Аллерген: глютен (пита)."},
+ {q:"Аллергия на морепродукты. Ньокки можно?",cat:"main",opts:["С прошутто — да; с креветками — нет","Нет, оба нельзя","Да, оба можно","Только с креветками"],a:0,why:"Ньокки с креветками — морепродукты, глютен, лактоза. Ньокки с прошутто — лактоза, глютен."},
+ {q:"У меня аллергия на мед. Салат с уткой подойдет?",cat:"salad",opts:["Нет — в апельсиновом дрессинге мед","Да, меда там нет","Да, мед только в хойсине","Подойдет, если без свеклы"],a:0,why:"Апельсиновый дрессинг — апельсиновый фреш, горчица, мед, растительное масло. Он в салате с уткой, салате с говядиной и сендвиче с уткой."},
+ {q:"Что в апельсиновом дрессинге?",cat:"sauce",opts:["Апельсиновый фреш, дижонская и зерновая горчица, мед, растительное масло","Апельсиновый сок, майонез, сахар","Апельсин, соевый соус, кунжут","Апельсиновый фреш, йогурт, укроп"],a:0,why:"Аллергены дрессинга: цитрус, мед, горчица."},
+ {q:"Что такое хойсин?",cat:"sauce",opts:["Ферментированные бобы, рисовый уксус, кунжутное масло, сахар","Соус из тунца с каперсами","Томаты, лук, чеснок, оливки","Мисо с майонезом"],a:0,why:"Хойсин — ферментированные бобы, рисовый уксус, кунжутное масло, сахар. В салате с уткой, сендвиче с уткой и утке с пюре батата. Аллергенов по таблице нет."},
+ {q:"Что за масло в датском завтраке?",cat:"breakfast",opts:["Взбитое масло с каперсами, анчоусами, оливками и фисташками","Обычное сливочное масло","Оливковое масло с травами","Зеленое масло"],a:0,why:"Поэтому у датского завтрака аллергены: рыба (анчоусы) и орехи (фисташки), плюс лактоза, глютен, цитрус."},
+ {q:"Сырники можно без малиновой сгущенки?",cat:"breakfast",opts:["Да — заменим на карамель","Нет, сгущенка внутри сырников","Можно только без йогурта","Нет"],a:0,why:"Сырники — малиновая сгущенка, греческий йогурт, фисташковый крамбл. Сгущенку можно заменить на карамель."},
+ {q:"Мисо тартар — что в нём?",cat:"snack",opts:["Говядина, ферментированный редис и яблоко, кешью, чили, Хоккайдо","Тунец, авокадо, кунжут","Говядина, каперсы, соус из тунца","Лосось, мисо, огурец"],a:0,why:"Аллергены: орехи (кешью), глютен. Подаётся с мисо майонезом."},
+ {q:"Что за песто-дольче в антипасти?",cat:"snack",opts:["Фундук, мед, пармезан","Базилик, кедровые орехи, пармезан","Петрушка, чеснок, оливковое масло","Вяленые томаты и оливки"],a:0,why:"Антипасти — салями, прошутто, оливки в апельсине и соевом соусе, вяленые томаты, песто-дольче (фундук, мед, пармезан), фокачча. Аллергены: орехи, мед, лактоза, цитрус, глютен."},
+ {q:"С чем подаётся курочка тандури?",cat:"main",opts:["Лимонно-укропный крем, хумус, соте из овощей, пита","Пюре батата и хойсин","Соус маринара и шпинат","Бешамель и пармезан"],a:0,why:"Аллергены: лактоза (крем), цитрус (лимонный сок), глютен (пита)."},
+ {q:"Аллергия на горчицу. Какой салат можно?",cat:"salad",opts:["Зеленый салат","Салат с уткой","Салат с говядиной","Никакой"],a:0,why:"Зеленый салат — только орехи. В салатах с уткой и говядиной — апельсиновый дрессинг с горчицей."},
+ {q:"Мне нельзя цитрусовые. Какой сендвич с мясом?",cat:"sandwich",opts:["Сендвич со свининой","Сендвич с уткой","Сендвич с тунцом","Тост с авокадо"],a:0,why:"Сендвич со свининой — лактоза, глютен. С уткой — апельсиновый дрессинг (цитрус), с тунцом — лимонно-укропный крем (цитрус)."},
+ {q:"Что в арахисовом соусе?",cat:"sauce",opts:["Арахисовая паста, домашний майонез, сахар","Арахис, соевый соус, лайм","Арахисовая паста, йогурт, мед","Арахис, кокосовое молоко, чили"],a:0,why:"Арахисовая паста, домашний майонез, глутамат натрия (не обязательно говорим), сахар. Аллергены: орехи, горчица."},
+ {q:"Где у вас используется бешамель?",cat:"sauce",opts:["Глазунья на маффине, омлет/скрембл, ньокки с прошутто, доп. соте из овощей","Только в ньокки","Во всех сендвичах","В курочке тандури"],a:0,why:"Бешамель — сливочное масло, мука, молоко с луком, специи, мускатный орех. Из-за муки во всех этих блюдах глютен."},
+ {q:"Хашбраун — что внутри?",cat:"breakfast",opts:["Перечный крем, дзадзики, картофель, кабачок, жареное яйцо, пармезан, зеленое масло","Картофель, бешамель, шпинат","Картофель, чеддер, маринара","Батат, хойсин, яйцо"],a:0,why:"Аллерген: только лактоза."},
+ {q:"В зеленом салате есть орехи?",cat:"salad",opts:["По карте — да, отмечен как содержащий орехи (семечки, кунжут)","Нет, только зелень","Только миндаль","Есть арахисовый соус"],a:0,why:"Зеленый салат — романо, руккола, песто петрушки, кабачок, гуакамоле, тыквенные семечки, кунжут. Аллергены: орехи."},
+ {q:"В салате с говядиной есть орехи?",cat:"salad",opts:["Да — арахисовый соус и миндаль","Нет","Только кунжут","Есть, если добавить крамбл"],a:0,why:"Салат с говядиной — романо, руккола, пряная морковь, арахисовый соус, говядина, вяленые томаты, апельсиновый дрессинг, миндаль. Аллергены: орехи, горчица, цитрус, мед."},
+ {q:"Утка с пюре батата — какие аллергены?",cat:"main",opts:["Только лактоза","Глютен и лактоза","Орехи и мед","Аллергенов нет"],a:0,why:"Утка с пюре батата — соус хойсин, грибы, соус из портвейна, пармезан. Аллерген: лактоза."},
+ {q:"Омлет без глютена сделаете?",cat:"breakfast",opts:["По карте омлет с глютеном — из-за бешамеля (мука)","Да, в омлете нет глютена","Только без пармезана","Только скрембл без глютена"],a:0,why:"Омлет/скрембл — соус бешамель, соте из овощей, пармезан. Аллергены: лактоза, глютен (мука в бешамеле)."},
+ {q:"Каша с грибами — на воде?",cat:"breakfast",opts:["На курином бульоне","На воде","На молоке","На кокосовом молоке"],a:0,why:"Овсяная каша с грибами — грибы, куриный бульон, вареное яйцо, пармезан. Аллерген: лактоза."},
+ {q:"В тосте с авокадо есть лактоза?",cat:"sandwich",opts:["Нет — только глютен","Да, сыр","Да, крем чиз","Да, в гуакамоле"],a:0,why:"Тост с авокадо — гуакамоле, черри, тыквенные семечки, кунжут. Аллерген: глютен."},
+ {q:"Что в лимонно-укропном креме и где он?",cat:"sauce",opts:["Крем чиз, укроп, сливки, лимонный сок — в сендвиче с тунцом и курочке тандури","Йогурт, лимон, укроп — в датском завтраке","Майонез, лимон — в тартаре","Сливки, укроп — в ньокки"],a:0,why:"Аллергены крема: цитрус, лактоза. По таблице он также входит в датский завтрак."},
+ {q:"У меня аллергия на ягоды — где они есть?",cat:"breakfast",opts:["В сырниках (малиновая сгущенка)","В зеленом салате","В тосте с авокадо","В антипасти"],a:0,why:"Ягоды по таблице — только в малиновой сгущенке и, соответственно, в сырниках. Сгущенку можно заменить на карамель."}
+];
+
+/* ---------- STATE ---------- */
+const KEY="pure-bistro-food-v1";
+let S={known:{},errors:{},bestQuiz:null,bestGuest:null,rounds:0};
+try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+const view=document.getElementById("view");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const pick=(a,n)=>shuffle(a).slice(0,n);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const KEYS=["1","2","3","4","5","6","7","8","9"];
+
+function renderProgress(){
+  const known=Object.values(S.known).filter(Boolean).length;
+  const weak=Object.values(S.errors).filter(n=>n>0).length;
+  document.getElementById("progress").innerHTML=`Выучено <b>${known}</b>/${D.length}`+(weak?` · к повтору <b>${weak}</b>`:"");
+}
+const alHTML=d=>`<div class="al"><span class="k">Аллергены</span>${d.al.length?d.al.map(a=>`<span class="atag">${a}</span>`).join(""):`<span class="atag none">нет по таблице</span>`}</div>`;
+function itemHTML(d){
+  return `<div class="comp"><span class="k">Состав</span>${esc(d.ings.join(", "))}</div>${alHTML(d)}
+  ${d.where?`<div class="where"><span class="k">Где</span><b>${esc(d.where.join(", "))}</b></div>`:""}
+  ${d.note?`<div class="note">${esc(d.note)}</div>`:""}`;
+}
+
+/* ---------- ROUTER ---------- */
+let mode="browse";
+document.getElementById("nav").addEventListener("click",e=>{const t=e.target.closest(".tab");if(!t)return;setMode(t.dataset.mode);});
+function setMode(m){mode=m;document.onkeydown=null;document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.mode===m));window.scrollTo({top:0});renderProgress();({browse,allergens,cards,quiz,guest})[m]();}
+
+/* ---------- BROWSE ---------- */
+function browse(){
+  view.innerHTML=`<p class="lede">${DISHES.length} блюда и ${D.length-DISHES.length} соусов: состав, аллергены по таблице и где какой соус используется. Поиск ищет и по ингредиентам — например «пармезан» покажет всё, где он есть.</p>
+  <input class="search" id="q" type="search" placeholder="Найти: блюдо, ингредиент, соус, аллерген…" autocomplete="off">
+  <div id="list"></div>`;
+  const list=view.querySelector("#list"),q=view.querySelector("#q");
+  const draw=()=>{
+    const s=q.value.trim().toLowerCase();
+    const f=D.filter(d=>!s||[d.name,...d.ings,...d.al,...(d.where||[]),d.note||""].join(" ").toLowerCase().includes(s));
+    if(!f.length){list.innerHTML=`<div class="empty">Ничего не нашлось по «${esc(q.value)}»</div>`;return;}
+    list.innerHTML=Object.keys(CATS).map(c=>{
+      const items=f.filter(d=>d.cat===c);if(!items.length)return "";
+      return `<section class="group" data-cat="${c}"><div class="group-head"><h2>${CATS[c].name}</h2><span class="n">${items.length}</span></div>
+      ${items.map(d=>`<article class="item"><h3>${esc(d.name)}</h3>${itemHTML(d)}</article>`).join("")}</section>`;
+    }).join("");
+  };
+  q.addEventListener("input",draw);draw();
+}
+
+/* ---------- ALLERGEN TOOL ---------- */
+let alSel=new Set();
+function allergens(){
+  view.innerHTML=`<p class="lede">Гость называет аллергию — отметь её (можно несколько), и увидишь, что можно предложить, а где аллерген есть. Данные — из таблицы состава; при сомнении уточняй на кухне.</p>
+  <div class="chips" id="alc">${ALLERGENS.map(a=>`<button class="chip alc" data-a="${a}" aria-pressed="${alSel.has(a)}">${a}</button>`).join("")}</div>
+  <div class="two" id="res"></div>`;
+  view.querySelector("#alc").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;const a=b.dataset.a;alSel.has(a)?alSel.delete(a):alSel.add(a);b.setAttribute("aria-pressed",alSel.has(a));draw();});
+  const res=view.querySelector("#res");
+  const draw=()=>{
+    if(!alSel.size){res.innerHTML=`<p class="hint">Выбери аллерген выше. Например, «Глютен» — и сразу видно, что из сендвичей предложить нечего, а из основных подойдёт утка с пюре батата.</p>`;return;}
+    const sel=[...alSel];
+    const ok=DISHES.filter(d=>!d.al.some(a=>alSel.has(a)));
+    const no=DISHES.filter(d=>d.al.some(a=>alSel.has(a)));
+    const row=(d,bad)=>`<div class="r ${bad?"":"ok"}" data-cat="${d.cat}"><span><span class="c">${CATS[d.cat].name}</span>${esc(d.name)}</span>${bad?`<span class="who">${d.al.filter(a=>alSel.has(a)).map(a=>`<span>${a}</span>`).join("")}</span>`:""}</div>`;
+    res.innerHTML=`<section><h2 class="sec ok">Можно предложить <span class="n">${ok.length}</span></h2><div class="list">${ok.length?ok.map(d=>row(d,false)).join(""):`<p class="hint">Без «${sel.join("», «")}» по таблице ничего нет.</p>`}</div></section>
+    <section><h2 class="sec no">Содержит <span class="n">${no.length}</span></h2><div class="list">${no.map(d=>row(d,true)).join("")}</div></section>`;
+  };
+  draw();
+}
+
+/* ---------- FLASHCARDS ---------- */
+let cardFilter="all";
+function cards(){
+  const filters=[["all","Всё"],...Object.keys(CATS).map(c=>[c,CATS[c].name]),["weak","Только к повтору"]];
+  view.innerHTML=`<p class="lede">Прочитай название, вспомни состав и аллергены, нажми на карточку и проверь себя. «Знаю» убирает карточку в выученные, «Ещё повторю» вернёт её через пару карточек.</p>
+  <div class="chips" id="filters">${filters.map(([k,n])=>`<button class="chip" data-f="${k}" aria-pressed="${k===cardFilter}">${n}</button>`).join("")}</div><div id="deckwrap"></div>`;
+  view.querySelector("#filters").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cardFilter=b.dataset.f;cards();});
+  let base=cardFilter==="all"?D:cardFilter==="weak"?D.filter(d=>S.errors[d.id]>0||!S.known[d.id]):D.filter(d=>d.cat===cardFilter);
+  let deck=[...shuffle(base.filter(d=>!S.known[d.id])),...shuffle(base.filter(d=>S.known[d.id]))];
+  const total=deck.length;let done=0,side="front";
+  const wrap=view.querySelector("#deckwrap");
+  const draw=()=>{
+    if(!deck.length){wrap.innerHTML=`<div class="result"><div class="big">${total}<small> / ${total}</small></div><p>${total?"Колода пройдена. Выученные уходят в конец, «ещё повторю» всплывают снова.":"В этом фильтре карточек нет — всё выучено и без ошибок."}</p><div class="row"><button class="btn primary" id="again">Ещё раз</button><button class="btn" id="toquiz">Перейти к квизу</button></div></div>`;
+      wrap.querySelector("#again").onclick=cards;wrap.querySelector("#toquiz").onclick=()=>setMode("quiz");return;}
+    const d=deck[0];
+    wrap.innerHTML=`<div class="card" data-cat="${d.cat}" data-side="${side}" tabindex="0" role="button" aria-label="Перевернуть карточку">
+      <div class="top"><span class="cat">${CATS[d.cat].name}</span><span class="count">${done+1} / ${total}${S.known[d.id]?" · выучено":""}</span></div>
+      ${side==="front"?`<h2>${esc(d.name)}</h2><div class="front-hint">Состав → аллергены${d.cat==="sauce"?" → в каких блюдах":""}. Нажми, чтобы проверить</div>`
+      :`<h2>${esc(d.name)}</h2><div class="back">${itemHTML(d)}</div>`}
+    </div>
+    <div class="actions">${side==="front"?`<button class="btn primary" id="flip">Показать состав</button>`:
+      `<button class="btn bad" id="no">Ещё повторю</button><button class="btn good" id="yes">Знаю</button>`}</div>`;
+    const card=wrap.querySelector(".card");
+    const flip=()=>{side=side==="front"?"back":"front";draw();};
+    card.onclick=flip;card.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip();}};
+    if(side==="front")wrap.querySelector("#flip").onclick=flip;
+    else{
+      wrap.querySelector("#yes").onclick=()=>{S.known[d.id]=true;save();renderProgress();deck.shift();done++;side="front";draw();};
+      wrap.querySelector("#no").onclick=()=>{delete S.known[d.id];save();renderProgress();deck.shift();deck.splice(Math.min(3,deck.length),0,d);side="front";draw();};
+    }
+  };
+  draw();
+}
+
+/* ---------- QUIZ GENERATORS ---------- */
+const lc=s=>s.toLowerCase().replace(/\s*\(.*?\)\s*/g,"").trim();
+const ALL_INGS=[...new Map(D.flatMap(d=>d.ings).map(n=>[lc(n),n])).values()];
+function distractorIngs(d,n){
+  const own=new Set(d.ings.map(lc));
+  const pool=ALL_INGS.filter(x=>!own.has(lc(x)));
+  const sameCat=pool.filter(x=>D.some(o=>o.cat===d.cat&&o.id!==d.id&&o.ings.some(y=>lc(y)===lc(x))));
+  const seen=new Set(),out=[];
+  for(const x of [...shuffle(sameCat),...shuffle(pool)]){if(seen.has(lc(x)))continue;seen.add(lc(x));out.push(x);if(out.length>=n)break;}
+  return out;
+}
+function others(d,n,f){
+  const same=D.filter(o=>o.id!==d.id&&o.cat===d.cat&&f(o)),rest=D.filter(o=>o.id!==d.id&&o.cat!==d.cat&&f(o));
+  return [...shuffle(same),...shuffle(rest)].slice(0,n);
+}
+const compStr=d=>d.ings.join(", ");
+function qCompName(d){
+  const seen=new Set([compStr(d)]);const o=others(d,3,x=>{const c=compStr(x);if(seen.has(c))return false;seen.add(c);return true;});
+  const opts=shuffle([d,...o].map(compStr));
+  return {type:"mc",drink:d,title:`Что входит в «${d.name}»?`,sub:CATS[d.cat].name,opts,a:opts.indexOf(compStr(d))};
+}
+function qNameByComp(d){
+  const seen=new Set([compStr(d)]);const o=others(d,3,x=>{const c=compStr(x);if(seen.has(c))return false;seen.add(c);return true;});
+  const opts=shuffle([d,...o].map(x=>x.name));
+  return {type:"mc",drink:d,title:"Что это за позиция?",sub:CATS[d.cat].name,quote:compStr(d),who:"Состав",opts,a:opts.indexOf(d.name)};
+}
+function qOdd(d){
+  const extra=distractorIngs(d,1)[0];const opts=shuffle([...d.ings,extra]);
+  return {type:"mc",drink:d,title:`Что лишнее в составе «${d.name}»?`,sub:"Один ингредиент здесь из другой позиции",opts,a:opts.indexOf(extra)};
+}
+function qCompose(d){
+  const n=d.ings.length>=5?3:4;const pool=shuffle([...d.ings,...distractorIngs(d,n)]);
+  return {type:"compose",drink:d,title:`Собери состав «${d.name}»`,sub:`Выбери все ингредиенты — их ${d.ings.length}`,pool,correct:d.ings,after:d=>itemHTML(d)};
+}
+function qAllergens(d){
+  return {type:"compose",drink:d,title:`Отметь аллергены «${d.name}»`,sub:`По таблице их ${d.al.length}`,pool:ALLERGENS,correct:d.al};
+}
+function qWhere(d){
+  const seen=new Set([d.where.join(", ")]);const o=others(d,3,x=>{if(!x.where)return false;const w=x.where.join(", ");if(seen.has(w))return false;seen.add(w);return true;});
+  if(o.length<3)return null;
+  const opts=shuffle([d,...o].map(x=>x.where.join(", ")));
+  return {type:"mc",drink:d,title:`Где используется «${d.name}»?`,sub:"Соусы",opts,a:opts.indexOf(d.where.join(", "))};
+}
+function qHasAllergen(d){
+  // Есть ли в блюде X аллерген Y? — да/нет
+  const yes=Math.random()<0.5&&d.al.length;
+  const a=yes?pick(d.al,1)[0]:pick(ALLERGENS.filter(x=>!d.al.includes(x)),1)[0];
+  const opts=["Да","Нет"];
+  return {type:"mc",drink:d,title:`В «${d.name}» есть ${a.toLowerCase()}?`,sub:"Гость с аллергией ждёт точного ответа",opts,a:yes?0:1};
+}
+function makeRound(n,onlyWeak){
+  let src=onlyWeak?D.filter(d=>S.errors[d.id]>0):D;if(src.length<3)src=D;
+  const items=[];while(items.length<n)items.push(...shuffle(src));
+  return items.slice(0,n).map(d=>{
+    const gens=[()=>qCompName(d),()=>qNameByComp(d),()=>qHasAllergen(d),()=>qHasAllergen(d)];
+    if(d.ings.length>=3)gens.push(()=>qOdd(d),()=>qCompose(d));
+    if(d.al.length)gens.push(()=>qAllergens(d),()=>qAllergens(d));
+    if(d.where)gens.push(()=>qWhere(d));
+    let q=null,tries=0;while(!q&&tries++<8)q=gens[Math.floor(Math.random()*gens.length)]();
+    return q||qCompName(d);
+  });
+}
+
+/* ---------- QUIZ RUNNER ---------- */
+function runQuiz({items,label,onEnd}){
+  let i=0,score=0;const mistakes=[];
+  const step=()=>{
+    if(i>=items.length){onEnd(score,mistakes);return;}
+    const it=items[i];
+    view.innerHTML=`<div class="qhead"><span>${label} · ${i+1} из ${items.length}</span><span>Верно: ${score}</span></div>
+    <div class="bar"><i style="width:${i/items.length*100}%"></i></div>
+    <div data-cat="${it.drink?it.drink.cat:(it.cat||"")}">
+      ${it.quote?`<blockquote class="quote"><span class="who">${it.who||"Из таблицы"}</span>${esc(it.quote)}</blockquote>`:""}
+      <h2 class="question">${esc(it.title)}</h2>${it.sub?`<p class="qsub">${esc(it.sub)}</p>`:""}
+      <div id="body"></div><div id="fb"></div><div id="next"></div>
+    </div>`;
+    const body=view.querySelector("#body"),fb=view.querySelector("#fb"),nx=view.querySelector("#next");
+    const finish=(ok,extraHTML)=>{
+      if(ok)score++;else mistakes.push(it);
+      if(it.drink){if(ok){if(S.errors[it.drink.id]>0)S.errors[it.drink.id]--;}else S.errors[it.drink.id]=(S.errors[it.drink.id]||0)+1;save();renderProgress();}
+      fb.innerHTML=`<div class="feedback" data-ok="${ok?1:0}"><div class="verdict">${ok?"Верно":"Не совсем"}</div>${extraHTML}</div>`;
+      nx.innerHTML=`<div class="actions"><button class="btn primary" id="go">${i+1<items.length?"Дальше":"К результату"}</button></div>`;
+      const go=()=>{i++;step();};view.querySelector("#go").onclick=go;view.querySelector("#go").focus();
+      document.onkeydown=e=>{if(e.key==="Enter"){document.onkeydown=null;go();}};
+    };
+    const dishCard=d=>`<h3>${esc(d.name)}</h3>${itemHTML(d)}`;
+    if(it.type==="mc"){
+      body.innerHTML=`<div class="options">${it.opts.map((o,k)=>`<button class="opt" data-k="${k}"><span class="key">${KEYS[k]}</span><span>${esc(o)}</span></button>`).join("")}</div>`;
+      const choose=k=>{
+        const btns=[...body.querySelectorAll(".opt")];btns.forEach(b=>b.disabled=true);
+        btns[it.a].dataset.state="right";if(k!==it.a)btns[k].dataset.state="wrong";btns.forEach((b,j)=>{if(j!==it.a&&j!==k)b.dataset.state="dim";});
+        finish(k===it.a,it.why?`<div>${esc(it.why)}</div>`:dishCard(it.drink));
+      };
+      body.onclick=e=>{const b=e.target.closest(".opt");if(b&&!b.disabled)choose(+b.dataset.k);};
+      document.onkeydown=e=>{const k=KEYS.indexOf(e.key);if(k>-1&&k<it.opts.length){document.onkeydown=null;choose(k);}};
+    }else{
+      const sel=new Set();
+      body.innerHTML=`<div class="ings">${it.pool.map((p,k)=>`<button class="ing" data-k="${k}" aria-pressed="false">${esc(p)}</button>`).join("")}</div><div class="actions"><button class="btn primary" id="chk" disabled>Проверить</button></div>`;
+      const chk=body.querySelector("#chk");
+      body.onclick=e=>{const b=e.target.closest(".ing");if(!b||b.disabled)return;const k=+b.dataset.k;sel.has(k)?sel.delete(k):sel.add(k);b.setAttribute("aria-pressed",sel.has(k));chk.disabled=!sel.size;};
+      chk.onclick=()=>{
+        const correct=new Set(it.correct);let ok=true;
+        body.querySelectorAll(".ing").forEach(b=>{const k=+b.dataset.k,isC=correct.has(it.pool[k]),s=sel.has(k);b.disabled=true;
+          if(isC&&s)b.dataset.state="right";else if(!isC&&s){b.dataset.state="wrong";ok=false;}else if(isC&&!s){b.dataset.state="missed";ok=false;}else b.style.opacity=.4;});
+        chk.remove();finish(ok,dishCard(it.drink));
+      };
+      document.onkeydown=null;
+    }
+  };
+  step();
+}
+function resultScreen({score,total,mistakes,best,onAgain,onWeak,againLabel}){
+  document.onkeydown=null;
+  view.innerHTML=`<div class="result"><div class="eyebrow">Результат</div><div class="big">${score}<small> / ${total}</small></div>
+  <p>${score===total?"Чисто. Гостю с аллергией можно отвечать уверенно.":score>=total*0.7?"Хорошо. Осталось добить несколько позиций.":"Есть над чем поработать — открой карточки к повтору."}${best!=null?` Лучший результат: ${best} / ${total}.`:""}</p>
+  ${mistakes.length?`<div class="eyebrow" style="text-align:left;margin-bottom:8px">Разобрать</div><div class="mistakes">${mistakes.map(m=>`<div class="m" data-cat="${m.drink?m.drink.cat:m.cat}">${m.drink?`<b>${esc(m.drink.name)}</b><div>${esc(compStr(m.drink))}</div><div class="d">Аллергены: ${m.drink.al.length?esc(m.drink.al.join(", ")):"нет по таблице"}</div>`:`<b>${esc(m.quote)}</b><div class="d">${esc(m.why)}</div>`}</div>`).join("")}</div>`:""}
+  <div class="row"><button class="btn primary" id="again">${againLabel||"Ещё раунд"}</button>${onWeak?`<button class="btn" id="weak">Только мои ошибки</button>`:""}</div></div>`;
+  view.querySelector("#again").onclick=onAgain;if(onWeak)view.querySelector("#weak").onclick=onWeak;
+}
+
+/* ---------- QUIZ ---------- */
+function quiz(){
+  const weak=D.filter(d=>S.errors[d.id]>0);
+  view.innerHTML=`<p class="lede">10 вопросов на раунд: что входит в блюдо, узнай блюдо по составу, отметь все аллергены, «есть ли в блюде глютен?», найди лишний ингредиент, собери состав, где используется соус. Ошибки запоминаются по позициям.</p>
+  <div class="stats"><div class="stat"><div class="v">${S.bestQuiz==null?"—":S.bestQuiz+"/10"}</div><div class="l">лучший раунд</div></div><div class="stat"><div class="v">${S.rounds}</div><div class="l">раундов сыграно</div></div><div class="stat"><div class="v">${weak.length}</div><div class="l">позиций к повтору</div></div></div>
+  ${weak.length?`<div class="eyebrow" style="margin-bottom:8px">Чаще всего ошибаюсь</div><div class="weak">${weak.sort((a,b)=>S.errors[b.id]-S.errors[a.id]).slice(0,6).map(d=>`<div class="w" data-cat="${d.cat}"><span>${esc(d.name)}</span><span class="e">${S.errors[d.id]} ${S.errors[d.id]===1?"ошибка":S.errors[d.id]<5?"ошибки":"ошибок"}</span></div>`).join("")}</div>`:""}
+  <div class="row"><button class="btn primary" id="start">Начать раунд</button>${weak.length>=3?`<button class="btn" id="startweak">Только мои ошибки</button>`:""}</div>
+  <p class="hint" style="margin-top:14px">Подсказка: варианты можно выбирать клавишами 1–9, «Дальше» — Enter.</p>
+  <p style="margin-top:24px"><button class="reset" id="reset">Сбросить весь прогресс</button></p>`;
+  view.querySelector("#reset").onclick=()=>{S={known:{},errors:{},bestQuiz:null,bestGuest:null,rounds:0};save();renderProgress();quiz();};
+  const go=onlyWeak=>runQuiz({items:makeRound(10,onlyWeak),label:onlyWeak?"Мои ошибки":"Квиз",onEnd:(score,mistakes)=>{
+    S.rounds++;if(!onlyWeak&&(S.bestQuiz==null||score>S.bestQuiz))S.bestQuiz=score;save();
+    resultScreen({score,total:10,mistakes,best:S.bestQuiz,onAgain:()=>go(false),onWeak:D.some(d=>S.errors[d.id]>0)?()=>go(true):null});
+  }});
+  view.querySelector("#start").onclick=()=>go(false);const w=view.querySelector("#startweak");if(w)w.onclick=()=>go(true);
+}
+
+/* ---------- GUEST ---------- */
+function guest(){
+  view.innerHTML=`<p class="lede">Гость спрашивает про аллергены и состав — выбери, что ответить. Ответы сформулированы по таблице; если гость называет аллергию, которой нет в таблице (яйца, соя, кунжут), — уточняй на кухне.</p>
+  <div class="stats"><div class="stat"><div class="v">${S.bestGuest==null?"—":S.bestGuest+"/10"}</div><div class="l">лучший результат</div></div><div class="stat"><div class="v">${GUEST.length}</div><div class="l">вопросов в базе</div></div><div class="stat"><div class="v">10</div><div class="l">за раунд</div></div></div>
+  <div class="row"><button class="btn primary" id="start">Начать</button></div>`;
+  const go=()=>{
+    const items=pick(GUEST,10).map(g=>{const opts=shuffle(g.opts);return {type:"mc",cat:g.cat,title:"Что ответить?",quote:g.q,who:"Гость",opts,a:opts.indexOf(g.opts[g.a]),why:g.why};});
+    runQuiz({items,label:"Гость спрашивает",onEnd:(score,mistakes)=>{if(S.bestGuest==null||score>S.bestGuest)S.bestGuest=score;save();
+      resultScreen({score,total:10,mistakes,best:S.bestGuest,onAgain:go,againLabel:"Ещё 10 вопросов"});}});
+  };
+  view.querySelector("#start").onclick=go;
+}
+
+setMode("browse");
+</script>
+
+</body>
+</html>

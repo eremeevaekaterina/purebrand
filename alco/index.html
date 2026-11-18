@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍷</text></svg>">
+<title>Pure Bistro Алкогольная карта</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Golos+Text:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#FFFFFF; --surface:#F6F4F0; --surface-2:#EDE9E2; --ink:#201A16; --muted:#6F665E; --line:#E4DFD7; --line-strong:#CFC7BC;
+  --accent:#3B2A22; --accent-ink:#FFFFFF; --accent-soft:#EFE7DF;
+  --good:#2E7D4F; --good-soft:#E3F2E8; --bad:#BF4538; --bad-soft:#F9E5E2; --warn:#B7791F; --warn-soft:#FBF0DC;
+  --c-spark:#4E7C4A; --c-white:#A8862A; --c-red:#8E2F3C; --c-beer:#A66B2A; --c-cider:#6F8A2E;
+  --c-spark-soft:#E6EFE3; --c-white-soft:#F8F1DC; --c-red-soft:#F5E3E5; --c-beer-soft:#F3E8DA; --c-cider-soft:#EDF1DD;
+  --shadow:0 10px 30px rgba(32,26,22,.10), 0 2px 6px rgba(32,26,22,.06);
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#151110; --surface:#1F1A17; --surface-2:#2A241F; --ink:#F2EDE6; --muted:#A79E93; --line:#332C26; --line-strong:#4A413A;
+    --accent:#E9DCCB; --accent-ink:#1B140F; --accent-soft:#2E261F;
+    --good:#6CC08F; --good-soft:#1C3227; --bad:#F08B7E; --bad-soft:#3A1F1B; --warn:#E3B05A; --warn-soft:#3A2F1A;
+    --c-spark:#8FC085; --c-white:#E0BE5C; --c-red:#E48A97; --c-beer:#E0A868; --c-cider:#B5CC6A;
+    --c-spark-soft:#1F2B1E; --c-white-soft:#332B17; --c-red-soft:#351E22; --c-beer-soft:#33271A; --c-cider-soft:#262E18;
+    --shadow:0 10px 30px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#151110; --surface:#1F1A17; --surface-2:#2A241F; --ink:#F2EDE6; --muted:#A79E93; --line:#332C26; --line-strong:#4A413A;
+  --accent:#E9DCCB; --accent-ink:#1B140F; --accent-soft:#2E261F;
+  --good:#6CC08F; --good-soft:#1C3227; --bad:#F08B7E; --bad-soft:#3A1F1B; --warn:#E3B05A; --warn-soft:#3A2F1A;
+  --c-spark:#8FC085; --c-white:#E0BE5C; --c-red:#E48A97; --c-beer:#E0A868; --c-cider:#B5CC6A;
+  --c-spark-soft:#1F2B1E; --c-white-soft:#332B17; --c-red-soft:#351E22; --c-beer-soft:#33271A; --c-cider-soft:#262E18;
+  --shadow:0 10px 30px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);-webkit-font-smoothing:antialiased;min-height:100vh}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance;letter-spacing:-.01em}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+
+header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:14px 0 6px}
+.brand h1{font-size:17px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.brand h1 span{color:var(--muted);font-weight:500}
+@media (max-width:420px){.brand h1 span{display:none}}
+.progress{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right}
+.progress b{color:var(--ink);font-weight:600}
+nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:6px 16px 10px;margin:0 -16px}
+nav::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:8px 14px;border-radius:999px;font-weight:500;font-size:14px;color:var(--muted);border:1px solid transparent;transition:background .15s,color .15s}
+.tab:hover{background:var(--surface)}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+
+main{padding:22px 0 60px}
+.lede{color:var(--muted);font-size:15px;max-width:60ch;margin:0 0 18px}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+
+.cat{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--cc);padding:3px 9px;border-radius:999px;background:var(--cs)}
+.cat::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cc)}
+[data-cat="spark"]{--cc:var(--c-spark);--cs:var(--c-spark-soft)}
+[data-cat="white"]{--cc:var(--c-white);--cs:var(--c-white-soft)}
+[data-cat="red"]{--cc:var(--c-red);--cs:var(--c-red-soft)}
+[data-cat="beer"]{--cc:var(--c-beer);--cs:var(--c-beer-soft)}
+[data-cat="cider"]{--cc:var(--c-cider);--cs:var(--c-cider-soft)}
+
+.search{width:100%;padding:12px 14px;border:1px solid var(--line-strong);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit;margin-bottom:22px}
+.search::placeholder{color:var(--muted)}
+.group{margin:0 0 30px}
+.group-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.group-head h2{font-size:15px;font-weight:600;color:var(--cc)}
+.group-head .n{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.group-head::after{content:"";flex:1;height:1px;background:var(--line)}
+.intro{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:62ch}
+.item{padding:14px 0;border-bottom:1px solid var(--line);display:grid;gap:8px}
+.item:last-child{border-bottom:0}
+.item h3{font-size:16px;font-weight:600}
+.fields{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:15px}
+.fields .k{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding-top:3px}
+.fields .v{font-weight:500}
+.fields .v.style{color:var(--cc)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:13px;padding:3px 9px;border-radius:999px;background:var(--surface-2);color:var(--ink)}
+.desc{color:var(--muted);font-size:15px}
+.desc .k{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-right:6px}
+.note{display:inline-flex;gap:8px;align-items:flex-start;font-size:14px;background:var(--warn-soft);color:var(--ink);padding:6px 10px;border-radius:8px;width:fit-content;max-width:100%}
+.note::before{content:"!";font-family:var(--display);font-weight:700;color:var(--warn);flex:0 0 auto}
+.empty{color:var(--muted);padding:30px 0;text-align:center}
+.hint{color:var(--muted);font-size:14px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{padding:6px 12px;border-radius:999px;border:1px solid var(--line-strong);font-size:14px;color:var(--muted);background:var(--bg)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+.card{background:var(--surface);border-radius:20px;box-shadow:var(--shadow);padding:28px 24px;min-height:320px;display:flex;flex-direction:column;gap:14px;cursor:pointer;position:relative;border:1px solid var(--line)}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.card .count{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.card h2{font-size:clamp(22px,5vw,30px);font-weight:600;line-height:1.15;margin-top:auto}
+.card .front-hint{color:var(--muted);font-size:14px;margin-bottom:auto}
+.card .back{display:flex;flex-direction:column;gap:10px;margin-bottom:auto}
+.card[data-side="back"] h2{margin-top:0;font-size:20px}
+.actions{display:flex;gap:10px;margin-top:16px}
+.btn{flex:1;padding:14px 16px;border-radius:14px;font-weight:600;font-size:15px;border:1px solid var(--line-strong);background:var(--bg);transition:transform .08s}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.good{border-color:var(--good);color:var(--good)}
+.btn.bad{border-color:var(--bad);color:var(--bad)}
+.btn[disabled]{opacity:.45;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:4px;background:var(--surface-2);border-radius:2px;overflow:hidden;margin-bottom:22px}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.question{font-family:var(--display);font-size:clamp(18px,4.6vw,24px);font-weight:600;line-height:1.25;margin:0 0 6px}
+.qsub{color:var(--muted);margin:0 0 20px;font-size:15px}
+.quote{background:var(--surface);border-left:3px solid var(--cc,var(--accent));padding:14px 16px;border-radius:0 14px 14px 0;margin:0 0 20px;font-size:17px;line-height:1.45}
+.quote .who{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:4px}
+.options{display:grid;gap:10px}
+.opt{text-align:left;padding:14px 16px;border-radius:14px;border:1px solid var(--line-strong);background:var(--bg);font-size:15px;line-height:1.4;display:flex;gap:12px;align-items:flex-start;transition:border-color .15s,background .15s}
+.opt .key{flex:0 0 22px;height:22px;border-radius:6px;background:var(--surface-2);color:var(--muted);font-size:12px;font-weight:600;display:grid;place-items:center;margin-top:1px}
+.opt:hover:not([disabled]){border-color:var(--ink)}
+.opt[data-state="right"]{border-color:var(--good);background:var(--good-soft)}
+.opt[data-state="wrong"]{border-color:var(--bad);background:var(--bad-soft)}
+.opt[data-state="dim"]{opacity:.5}
+.opt[disabled]{cursor:default}
+.ings{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.ing{padding:9px 14px;border-radius:999px;border:1px solid var(--line-strong);font-size:15px;background:var(--bg);transition:background .12s}
+.ing[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.ing[data-state="right"]{background:var(--good-soft);border-color:var(--good);color:var(--ink)}
+.ing[data-state="wrong"]{background:var(--bad-soft);border-color:var(--bad);color:var(--ink);text-decoration:line-through}
+.ing[data-state="missed"]{background:var(--bg);border:1px dashed var(--good);color:var(--good)}
+.ing[disabled]{cursor:default}
+.feedback{margin-top:18px;padding:16px;border-radius:14px;background:var(--surface);border:1px solid var(--line);display:grid;gap:10px;font-size:15px}
+.feedback .verdict{font-family:var(--display);font-weight:600;font-size:15px}
+.feedback[data-ok="1"] .verdict{color:var(--good)}
+.feedback[data-ok="0"] .verdict{color:var(--bad)}
+.feedback h3{font-size:16px}
+
+.result{text-align:center;padding:20px 0 10px}
+.result .big{font-family:var(--display);font-size:clamp(44px,14vw,72px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.result .big small{font-size:.4em;color:var(--muted);font-weight:600}
+.result p{color:var(--muted);margin:10px auto 22px;max-width:44ch}
+.mistakes{text-align:left;display:grid;gap:10px;margin:0 0 22px}
+.mistakes .m{padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-size:14px;display:grid;gap:4px}
+.mistakes .m b{font-weight:600;font-size:15px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 24px}
+.stat{background:var(--surface);border-radius:14px;padding:14px;border:1px solid var(--line)}
+.stat .v{font-family:var(--display);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .l{font-size:12px;color:var(--muted);margin-top:4px}
+.weak{display:grid;gap:8px;margin-bottom:24px}
+.weak .w{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);font-size:15px}
+.weak .w .e{color:var(--bad);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.reset{color:var(--muted);font-size:13px;text-decoration:underline;text-underline-offset:3px}
+
+/* theory */
+.tbl{display:grid;grid-template-columns:minmax(120px,1fr) 2fr;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:0 0 28px;font-size:15px}
+.tbl>div{padding:12px 14px;border-bottom:1px solid var(--line)}
+.tbl>div:nth-last-child(-n+2){border-bottom:0}
+.tbl .k{background:var(--surface);font-weight:600}
+.tbl .v{white-space:pre-line}
+.tbl .v .t{font-family:var(--display);font-weight:600;font-size:15px}
+h2.sec{font-size:18px;font-weight:600;margin:0 0 12px}
+.tips{margin:0 0 28px;padding:0 0 0 20px;color:var(--ink);font-size:15px}
+.tips li{margin-bottom:6px}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+@media (max-width:560px){.tbl{grid-template-columns:1fr}.tbl .k{border-bottom:0;padding-bottom:4px}.tbl>div:nth-last-child(2){border-bottom:0}}
+@media (max-width:480px){.stat .v{font-size:20px}.fields{grid-template-columns:1fr;gap:2px}.fields .k{padding-top:6px}}
+.brand h1 a.home{color:inherit;text-decoration:none}
+.brand h1 a.home::before{content:"← ";color:var(--muted);font-weight:500}
+.brand h1 a.home:hover{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <h1><a class="home" href="../" title="Все разделы">PURE BISTRO</a> <span>· алкогольная карта</span></h1>
+      <div class="progress" id="progress"></div>
+    </div>
+    <nav role="tablist" id="nav">
+      <button class="tab" role="tab" data-mode="browse">Карта</button>
+      <button class="tab" role="tab" data-mode="cards">Карточки</button>
+      <button class="tab" role="tab" data-mode="quiz">Квиз</button>
+      <button class="tab" role="tab" data-mode="guest">Гость спрашивает</button>
+      <button class="tab" role="tab" data-mode="theory">Теория</button>
+    </nav>
+  </div>
+</header>
+<main><div class="wrap" id="view"></div></main>
+
+<script>
+/* ---------- DATA (из учебной версии алкогольной карты Pure Bistro) ---------- */
+const CATS={
+  spark:{name:"Игристое и пет-наты"},
+  white:{name:"Белые и оранжевые"},
+  red:{name:"Красные"},
+  beer:{name:"Пиво",intro:"SVIA Brewery — грузинская крафтовая пивоварня в фермерском стиле, село Кеди около Сигнахи, Кахетия; небольшие партии пива в бельгийском и фермерском стиле. Liefmans — бельгийская пивоварня из Ауденарде (Оуденаарде), основана в 1679 году, известна фруктовыми элями и вишневым пивом."},
+  cider:{name:"Сидр Galipette",intro:"Galipette — французский натуральный сидр из Нормандии и Бретани. 100% яблочный сок прямого отжима, без концентрата, воды и сахара."}
+};
+// Поля по категориям: [ключ, подпись]
+const FIELDS={
+  spark:[["winery","Винодельня"],["grape","Сорт"],["region","Регион"],["style","Стиль"],["food","С чем"]],
+  white:[["winery","Винодельня"],["grape","Сорт"],["region","Регион"],["style","Стиль"],["food","С чем"]],
+  red:[["winery","Винодельня"],["grape","Сорт"],["region","Регион"],["style","Стиль"],["food","С чем"]],
+  beer:[["winery","Пивоварня"],["style","Стиль"]],
+  cider:[["made","Как сделан"]]
+};
+const D=[
+ // Игристое и пет-наты
+ {id:"cremant",cat:"spark",name:"Cremant Louis Bouillot",winery:"Louis Bouillot",grape:"Шардоне",region:"Бургундия, Франция",style:"Игристое",notes:["Яблоки","Груша","Выпечка"],food:"Курица, но не тандури, морепродукты",desc:"Насыщенный искристый, в аромате и вкусе яблочная шарлотка, очень элегантная минеральность.",note:"К курице — но не к тандури"},
+ {id:"prosecco",cat:"spark",name:"Prosecco superiore (щас Fili)",winery:"Fili",grape:"Глера",region:"Италия, Венетто",style:"Игристое",notes:["Минеральное","Тропические фрукты","Зеленое яблоко","Ананас"],food:"Подходит практически ко всему, но идеально на аперитив, к завтракам, морепродуктам",desc:"Очень хрустящее, интенсивное игристое с яркой кислотностью, нотами тропических фруктов и зеленого яблока."},
+ {id:"amberg",cat:"spark",name:"Pet Nat Domaine Amberg",winery:"Domaine Yves Amberg",grape:"Гевюрцтраминер, Пино блан",region:"Франция, Эльзас",style:"Французский пет нат",notes:["Мед","Грейпфрут","Высокая кислотность"],food:"Морепродукты, закуски, курочка",desc:"Натуральное (органическое) вино с очень яркими медовыми оттенками и высокой кислотностью. Тело выше среднего. Пет нат создан древним методом «ансестраль»: вино разливают в бутылки до завершения первого брожения, поэтому оно доигрывает уже в бутылке, образуя мягкие пузырьки."},
+ {id:"carbmerlot",cat:"spark",name:"Carbonized Merlot Less but More",winery:"La Vicomté",grape:"Мерло (карбонизированный)",region:"Франция, Лангедок",style:"Газированное красное / шипучее",notes:["Клубника","Черника","Смородина","Малина","Высокая сладость","Низкая кислотность"],food:"Легкая еда, закуски; с мясом не очень мэтчится",desc:"Мерло, насыщенный газом CO2. Приготовлен по веганским стандартам, крепость понижена до 6%. Потрясающая альтернатива для любителей сидров: много ягод, легкая медовость и свежесть. Рекомендуется в теплую погоду.",note:"6%, веганское, альтернатива сидру; с мясом не мэтчится"},
+ {id:"balance",cat:"spark",name:"Balance Brut South Africa",winery:"Balance",grape:"Совиньон Блан",region:"ЮАР",style:"Игристое",notes:["Яблоки","Груша","Сливочность"],food:"Легкие блюда, морепродукты",desc:"Молодое игристое с легким телом, высокой игристостью и свежими яблочными оттенками; в аромате груша и сливки."},
+ {id:"chinuri",cat:"spark",name:"Pet Nat Chinuri",winery:"Pheasants Tears",grape:"Чинури",region:"Грузия, Картли",style:"Пет Нат Оранж",notes:["Апельсин","Цедра","Травы","Копченость","Яркая ферментность"],food:"Яркие блюда по типу тандури",desc:"Взрослый пет нат (7 лет) с очень интенсивным ароматом и вкусом. Пет нат оранж с копчено-пряно-цитрусовыми оттенками. ВАЖНО: быть осторожными при открытии бутылки — деревянная пробка уже размякла и уходит в осадок, нужно всегда убирать часть.",note:"Осторожно при открытии: пробка размякла и уходит в осадок — всегда убирать часть"},
+ {id:"salome",cat:"spark",name:"Pet Nat x Salome Tsitska Otskhanuri MAGNUM",winery:"We Are Ghvino",grape:"Тситска, Отсханури",region:"Грузия, Картли",style:"Розовый Пет Нат",notes:["Брусника","Клюква","Клубника со сливками"],food:"Сендвич с прошутто, тунцом, салаты",desc:"Молодой розовый, легкий пет нат с ягодными оттенками и минеральностью.",note:"Формат MAGNUM"},
+ {id:"phoenix",cat:"spark",name:"Phoenix Tears Pet Nat Poliphonia MAGNUM",winery:"Pheasants Tears",grape:"Более ста сортов",region:"Грузия, Картли",style:"Пет Нат",notes:["Клубника","Помада","Гранат","Маракуйя","Немного кожано"],food:"Сладко, клубнично-тропически, ягодно",desc:"Сладенько, тропически: клубника, гранат, тропики.",note:"Формат MAGNUM; в купаже более ста сортов"},
+ {id:"tiphaine",cat:"spark",name:"La Grange Tiphaine Nouveau Nez",winery:"La Grange Tiphaine",grape:"Шенин блан",region:"Франция, Луара",style:"Французский пет нат",notes:["Айва","Марципан","Лимон","Хлеб"],food:"Десерты, легкие блюда",desc:"Деликатные, утонченные пузырьки и глубокая кислотность. Элегантная праздничная бутылка."},
+ {id:"antsi-melqo",cat:"spark",name:"Antsi da Tseti Tsolikouri–Melqo Pet Nat",winery:"Antsi da Tseti",grape:"Тсоликоури, Мелько",region:"Багдати, Грузия",style:"Пет Нат",notes:["Груша","Яблоко","Лайм"],food:"Морепродукты, закуски, завтраки",desc:"Утонченный пет нат с яркой кислотностью и нотами желтых фруктов."},
+ {id:"antsi-dzel",cat:"spark",name:"Antsi da Tseti Dzelshavi Pet Nat",winery:"Antsi da Tseti",grape:"Дзельшави",region:"Багдати, Грузия",style:"Пет Нат Розе",notes:["Цветочно-ягодный профиль"],food:"Морепродукты, закуски, завтраки",desc:"Цветочно-ягодный, освежающий розовый пет-нат."},
+ {id:"antsi-tsitska",cat:"spark",name:"Antsi da Tseti Tsitska Pet Nat",winery:"Antsi da Tseti",grape:"Тситска",region:"Багдати, Грузия",style:"Пет Нат",notes:["Зеленые яблоки","Цитрусы","Хлеб"],food:null,desc:"Свежий минеральный пет нат с нотами зеленых фруктов/цитрусов, хлебным оттенком."},
+ // Белые и оранжевые
+ {id:"sauv",cat:"white",name:"Sauvignon Blanc Laderas du Romeo 2024",winery:"Laderas du Romeo 2024",grape:"Совиньон Блан",region:"Испания",style:"Белое тихое",notes:["Тропики","Маракуйя","Персик","Красное яблоко"],food:"Блюда с курицей, завтраки",desc:"Хороший представитель савиньонов с испанским терруаром: гладко, фруктово, стиль не сухого вина, продолжительное послевкусие.",note:"Стиль не сухого вина"},
+ {id:"riesling",cat:"white",name:"Riesling n16",winery:"Peter Lauer",grape:"Рислинг",region:"Germany, 2024",style:"Белое тихое",notes:["Лемонграс","Лимоны","Сливочность","Бисквит","Тропики"],food:"Курица, морепродукты, салаты",desc:"Молодой рислинг, без яркой бензольности, но очень округлый, интенсивный, слегка тропический и глубокий.",note:"Без яркой бензольности"},
+ {id:"rkatsiteli",cat:"white",name:"Rkatsiteli Pheasants Tears",winery:"Pheasants Tears",grape:"Rkatsiteli",region:"Имерети, Грузия",style:"Белое тихое",notes:["Цитрусы","Мед","Орехи"],food:"Курица и даже красное мясо",desc:"Вино из квеври, поэтому имеет оранжевый оттенок и интенсивное тело. Но оно не крепкое, имеет плотную структуру и много медово-мармеладных оттенков. Также цитрусы и миндаль.",note:"Из квеври — оранжевый оттенок; подходит даже к красному мясу"},
+ {id:"tsolikouri-pt",cat:"white",name:"Tsolikouri Pheasants Tears",winery:"Pheasants Tears",grape:"Tsolikouri",region:"Кахетия, Грузия",style:"Белое тихое",notes:["Груша","Цитрусы","Минералы","Высокая кислотность"],food:"Легкие блюда, морепродукты",desc:"Трехдневная мацерация, затем 10 месяцев в квеври. Тело среднее, высокая кислотность с оттенками лайма, груши, бензольности и минеральности.",note:"3 дня мацерации, 10 месяцев в квеври"},
+ {id:"rokhster",cat:"white",name:"Rokhster Tsitska Tsolikouri 2025",winery:"Rokhster",grape:"Tsitska Tsolikouri",region:"Имерети, Грузия",style:"Белое тихое",notes:["Груша","Лайм","Сливки","Запеченное яблоко","Кожа"],food:"Курица, аппетайзеры",desc:"Новый урожай популярного грузинского производителя, насыщенный, с цитрусовыми и оттенками желтых фруктов."},
+ {id:"pinot-chio",cat:"white",name:"Pinot Chio",winery:"Domaine Herr",grape:"Pinot Blanc",region:"France, Alsace",style:"Белое тихое",notes:["Персик","Цветы","Ваниль"],food:"Легкие блюда, морепродукты, сыры",desc:"Легкое, натуральное вино с округлым телом, сбалансированной фруктовой кислотностью."},
+ {id:"sop-tsitska",cat:"white",name:"Sopromadze Tsitska",winery:"Сопромадзе",grape:"Тситска",region:"Багдати, Грузия",style:"Белое тихое",notes:["Цветочный","Цитрусовый","Айва"],food:"Салаты, закуски",desc:"Насыщенное вино с оттенками цветов, цитрусов и желтых фруктов."},
+ {id:"sop-orange",cat:"white",name:"Sopromadze Tsolikouri–Tsitska–Krakhuna",winery:"Сопромадзе",grape:"Тсоликоури, Тситска, Крахуна",region:"Багдати, Грузия",style:"Оранжевое тихое",notes:["Медово-сливочное","Апельсиновая цедра","Низкая бензольность"],food:"Подойдет к основным блюдам и закускам",desc:"Медово-сливочное, апельсиновая цедра с низкой бензольностью.",note:"Единственное тихое оранжевое в карте"},
+ {id:"binner",cat:"white",name:"Christian Binner Amour Schwhir",winery:"Кристиан Биннер",grape:"Рислинг, Пино Гри, Гевюрцтраминер, Мускат, Оксеруа",region:"Эльзас, Франция",style:"Белое тихое",notes:["Полевые цветы","Груша","Яблоки","Экзотические специи"],food:null,desc:"Редкий купаж из Пино Гри и Гевюрцтраминера. Гастрономично и цветочно."},
+ // Красные
+ {id:"bonarda",cat:"red",name:"Bonarda Clasica",winery:"Colonia Las Liebres",grape:"Bonarda",region:"Argentina, Mendoza",style:"Красное тихое",notes:["Спелая вишня","Смородина","Лакрица","Ежевика"],food:"Ньокки, утка, говядина, антипасти",desc:"Яркое, фруктовое органическое вино из Аргентины. Тело среднее, фруктовое, продолжительное послевкусие."},
+ {id:"noblesse",cat:"red",name:"La Noblesse",winery:"La Vicomté",grape:"Сира, Гренаш, Кариньян",region:"Франция, Лангедок",style:"Красное тихое",notes:["Вишня","Смородина","Специи","Дерево"],food:"Утка, говядина",desc:"Биодинамическое французское вино."},
+ {id:"dzel-neb",cat:"red",name:"Dzelshavi Nebieridze We are Ghvino",winery:"We are Ghvino",grape:"Дзельшави",region:"Грузия, Рача/Имерети",style:"Красное тихое",notes:["Гранат","Клюква","Вишня","Роза"],food:"Подходит к легким блюдам",desc:"Освежающее натуральное летнее вино. У дзельшави сбалансированы сахара и кислоты, крепость 11%, что делает его не таким тельным, а наоборот, очень освежающим.",note:"Крепость 11% — летнее, освежающее"},
+ {id:"pla",cat:"red",name:"Pla da Gates Negre",winery:"Anna Espelt",grape:"Garnacha",region:"Spain, Catalonia, Emporda",style:"Красное тихое",notes:["Средиземноморские травы (гарриги)","Спелые красные ягоды"],food:"Красное мясо, основные блюда",desc:"Насыщенный фиолетовый цвет, мягкие танины, много ягод во вкусе; розмарин, тимьян, лаванда."},
+ {id:"beaujolais",cat:"red",name:"Domaine Lapalu Beaujolais",winery:"Domaine Lapalu",grape:"Гамэ",region:"Франция, деревня Божоле",style:"Красное тихое",notes:["Легкое","Питкое","Низкая танинность","Клубника","Вишня"],food:"Легкие блюда",desc:"Domaine Lapalu — культовое хозяйство в Божоле, возглавляемое Жан-Клодом Лапалю. Вина известны сочностью, фруктовостью и ярким характером: малина, клубника, вишня, полевые травы и минералы."},
+ {id:"chkhaveri",cat:"red",name:"Sopromadze Chkhaveri",winery:"Сопромадзе",grape:"Чхавери",region:"Багдати, Грузия",style:"Красное тихое",notes:["Земляника","Красные фрукты","Легкие пряности"],food:"Легкие блюда",desc:"Легкое летнее красное вино, которое можно пить холодным. Ягодное и обволакивающее.",note:"Можно пить холодным"},
+ {id:"sop-dzel",cat:"red",name:"Sopromadze Dzelshavi",winery:"Сопромадзе",grape:"Дзельшави",region:"Багдати, Грузия",style:"Красное тихое",notes:["Минеральное","Солоноватое","Вишневые оттенки"],food:"Курица/утка, основные блюда и закуски",desc:"Минеральное, солоноватое и очень яркое с вишневыми оттенками."},
+ // Пиво
+ {id:"wit",cat:"beer",name:"SVIA Wit",winery:"SVIA Brewery",style:"Бельгийское пшеничное",notes:["Очень мягкое","Освежающее"],desc:"Классическое бельгийское пшеничное пиво, очень мягкое и освежающее."},
+ {id:"tangerine",cat:"beer",name:"SVIA Tangerine Saison",winery:"SVIA Brewery",style:"Сезонный эль с мандаринами",notes:["Спелые мандарины","Сочный","Цитрусовый"],desc:"Сезонный эль, в который при варке или созревании добавляют спелые мандарины; вкус сочный и цитрусовый."},
+ {id:"blonde",cat:"beer",name:"SVIA Blonde Pale Ale",winery:"SVIA Brewery",style:"Осветленный эль из ржаного ячменя",notes:["Плотное","Цитрусовые оттенки","Базовое"],desc:"Осветленный эль из ржаного ячменя. Плотное, с цитрусовыми оттенками, достаточно базовое пиво."},
+ {id:"hazy",cat:"beer",name:"SVIA Hazy IPA",winery:"SVIA Brewery",style:"Мутный индийский пейл-эль",notes:["Ананас","Манго","Маракуйя","Без резкой горечи"],desc:"Мутный и сочный индийский пейл-эль. Выраженные ноты ананаса, манго и маракуйи без резкой, обжигающей горечи."},
+ {id:"fruitesse",cat:"beer",name:"Liefmans Fruitesse",winery:"Liefmans",style:"Легкое игристое фруктовое пиво, около 3,8%",notes:["Вишня","Малина","Клубника","Бузина","Черника"],desc:"Легкое игристое фруктовое пиво (около 3,8% крепости) с ярким ягодным вкусом: вишня, малина, клубника, бузина и черника.",note:"Около 3,8% крепости"},
+ // Сидр
+ {id:"brut",cat:"cider",name:"Galipette Брют",made:"Традиционная ферментация 100% сока горько-сладких и кислых нормандских яблок. Медленное брожение при низких температурах; брожение останавливают холодной фильтрацией до полного сбраживания сахара.",notes:["Сочное спелое яблоко","Легкая природная сладость","Мягкие танины яблочной кожицы"],desc:"Сбалансированный. Сочное спелое яблоко с легкой природной сладостью; мягкие танины яблочной кожицы."},
+ {id:"extra-brut",cat:"cider",name:"Galipette Экстра Брют",made:"Глубокое и длительное брожение. Купаж более чем из 15 местных горько-сладких сортов яблок Бретани. Сахар сбраживается практически полностью. Напиток не подвергается пастеризации.",notes:["Строгий","Минеральный","Землистые и древесные танины","Высокая хрустящая кислотность","Осенний яблоневый сад","Прелая листва"],desc:"Строгий и минеральный. Сахар полностью отсутствует. Землистые и древесные танины, вяжущая текстура, высокая хрустящая кислотность; осенний яблоневый сад и прелая листва.",note:"Сахар полностью отсутствует; без пастеризации"},
+ {id:"rose-cider",cat:"cider",name:"Galipette Розе",made:"Метод кивинга — старинная французская технология осветления сусла, естественно останавливающая дикие дрожжи и сохраняющая остаточный сахар. Розовый цвет — благодаря мацерации яблок с красной мякотью, без красителей.",notes:["Яблочная основа","Лесная земляника","Малина","Красная смородина","Свежая ягодная кислинка"],desc:"Ягодный и сочный: яблочная основа, лесная земляника, малина, красная смородина. Фруктовая сладость быстро компенсируется свежей ягодной кислинкой.",note:"Розовый цвет — мацерация яблок с красной мякотью, без красителей"},
+ {id:"nonalco",cat:"cider",name:"Galipette Нон-алко",made:"Закрытое брожение прерывают на самом начальном этапе резким охлаждением и фильтрацией. Это позволяет избежать образования алкоголя, сохраняя базовые ферментативные процессы.",notes:["Свежевыжатый яблочный сок","Утренняя роса","Мед","Сладость запеченного яблока","Легкая природная свежесть"],desc:"Насыщенный и фруктовый: свежевыжатый яблочный сок, утренняя роса, мед; сочная сладость запеченного яблока, уравновешенная легкой природной свежестью без дрожжевого или спиртуозного тона."}
+];
+const byId=Object.fromEntries(D.map(d=>[d.id,d]));
+const WINE=D.filter(d=>["spark","white","red"].includes(d.cat));
+
+const THEORY=[
+ ["Игристое вино","Вино, насыщенное углекислым газом. В карте выделены два основных метода производства: традиционный и ансестраль."],
+ ["Традиционный метод","Вторичное брожение происходит непосредственно в бутылке. Так производят настоящее шампанское во Франции, каву в Испании и франчакорту в Италии."],
+ ["Этапы традиционного метода","Тираж: в тихое базовое вино добавляют дрожжи и сахар для повторного брожения.\nВыдержка на осадке: автолиз дрожжей дает сложные ароматы хлебной корочки, орехов и выпечки.\nРемюаж: осадок собирают у горлышка.\nДегоржаж: осадок удаляют под давлением.\nДозаж: добавляют экспедиционный ликер для регулирования сладости."],
+ ["Ансестраль","Старинный метод: брожение начинается в чане, а завершается в бутылке. Его также называют сельским или «дедовским»; с ним связаны петнаты (pét-nat)."],
+ ["Особенности ансестраль","Без добавления сахара: вино доигрывает за счет природного сахара.\nОдин этап брожения: нет вторичного добавления дрожжей и сахара.\nБез фильтрации: возможен легкий осадок и мутность.\nЛегкий вкус: умеренная крепость и мягкая, неагрессивная пена."],
+ ["Тихое вино","Вино без газа."]
+];
+const TEMPS=[["Красные вина","15 °C (чуть ниже комнатной)"],["Красные летние вина","охлажденные: 6–8 °C; до 12 °C — слегка охлажденные"],["Белые","сильно охлажденные: 5–6 °C"],["Игристые","сильно охлажденные: 5–6 °C"]];
+
+/* Вопросы гостей и теория — ответы взяты из карты */
+const GUEST=[
+ {q:"Хочу игристое к морепродуктам, но не слишком дорогое в подаче — что-то универсальное.",cat:"spark",opts:["Prosecco superiore (Fili)","Carbonized Merlot Less but More","Pet Nat Chinuri","Phoenix Tears Pet Nat"],a:0,why:"Prosecco superiore подходит практически ко всему, идеально на аперитив, к завтракам и морепродуктам: хрустящее, с яркой кислотностью, тропические фрукты и зеленое яблоко."},
+ {q:"Есть игристое, но чтобы сладкое и ягодное?",cat:"spark",opts:["Carbonized Merlot Less but More","Cremant Louis Bouillot","Balance Brut","Antsi da Tseti Tsitska Pet Nat"],a:0,why:"Carbonized Merlot — газированное красное: клубника, черника, смородина, малина; высокая сладость, низкая кислотность. 6%, веганское, альтернатива сидру."},
+ {q:"Мы заказали тандури. Какое игристое возьмёте?",cat:"spark",opts:["Pet Nat Chinuri","Cremant Louis Bouillot","La Grange Tiphaine Nouveau Nez","Balance Brut"],a:0,why:"Pet Nat Chinuri — пет нат оранж с копчено-пряно-цитрусовыми оттенками, рекомендуется к ярким блюдам по типу тандури. Cremant, наоборот, к курице, но не тандури."},
+ {q:"А что такое пет-нат вообще?",cat:"spark",opts:["Игристое по методу ансестраль: брожение начинается в чане и завершается в бутылке, без добавления сахара и фильтрации","Игристое по традиционному методу, как шампанское","Тихое вино с добавленным CO2","Розовое вино с осадком"],a:0,why:"Ансестраль — старинный «дедовский» метод: брожение начинается в чане, завершается в бутылке. Без добавления сахара, один этап брожения, без фильтрации (возможен осадок и мутность), мягкая пена."},
+ {q:"Чем традиционный метод отличается от ансестраля?",cat:"spark",opts:["В традиционном — вторичное брожение в бутылке с добавлением дрожжей и сахара; в ансестрале — одно брожение, которое доигрывает в бутылке","Традиционный — без пузырьков","Ансестраль — это когда газ добавляют искусственно","Разницы нет, это синонимы"],a:0,why:"Традиционный метод: тираж (дрожжи + сахар), выдержка на осадке, ремюаж, дегоржаж, дозаж. Ансестраль: один этап брожения, без добавления сахара, без фильтрации."},
+ {q:"Что такое дегоржаж?",cat:"spark",opts:["Удаление осадка из бутылки под давлением","Добавление дрожжей и сахара","Сбор осадка у горлышка","Добавление ликера для сладости"],a:0,why:"Этапы традиционного метода: тираж — добавляют дрожжи и сахар; выдержка на осадке; ремюаж — осадок собирают у горлышка; дегоржаж — осадок удаляют под давлением; дозаж — добавляют экспедиционный ликер."},
+ {q:"При какой температуре вы подаёте игристое?",cat:"spark",opts:["Сильно охлажденным, 5–6 °C","15 °C, чуть ниже комнатной","6–8 °C, как летние красные","Комнатной температуры"],a:0,why:"Игристые и белые — сильно охлажденные, 5–6 °C. Красные — 15 °C; красные летние — 6–8 °C, до 12 °C слегка охлажденные."},
+ {q:"Красное надо охлаждать?",cat:"red",opts:["Обычные красные — 15 °C, чуть ниже комнатной; летние красные — охлажденные 6–8 °C","Нет, только комнатная температура","Да, все красные до 5–6 °C","Красное греют"],a:0,why:"Красные вина — 15 °C (чуть ниже комнатной). Красные летние вина — охлажденные 6–8 °C; до 12 °C — слегка охлажденные."},
+ {q:"Хочу красное, но лёгкое и холодное — жарко.",cat:"red",opts:["Sopromadze Chkhaveri","Pla da Gates Negre","La Noblesse","Bonarda Clasica"],a:0,why:"Sopromadze Chkhaveri — легкое летнее красное, которое можно пить холодным. Земляника, красные фрукты, легкие пряности."},
+ {q:"Есть красное невысокой крепости, освежающее?",cat:"red",opts:["Dzelshavi Nebieridze We are Ghvino","Pla da Gates Negre","La Noblesse","Bonarda Clasica"],a:0,why:"Dzelshavi Nebieridze — освежающее натуральное летнее вино, крепость 11%: сбалансированы сахара и кислоты, не тельное. Гранат, клюква, вишня, роза."},
+ {q:"Мы берём стейк. Какое красное?",cat:"red",opts:["Pla da Gates Negre","Domaine Lapalu Beaujolais","Sopromadze Chkhaveri","Dzelshavi Nebieridze"],a:0,why:"Pla da Gates Negre (Гарнача, Эмпорда) — к красному мясу и основным блюдам. Средиземноморские травы, спелые ягоды, мягкие танины."},
+ {q:"К ньоккам и антипасти что-нибудь красное?",cat:"red",opts:["Bonarda Clasica","Domaine Lapalu Beaujolais","Sopromadze Dzelshavi","Pla da Gates Negre"],a:0,why:"Bonarda Clasica (Аргентина, Мендоса) — ньокки, утка, говядина, антипасти. Спелая вишня, смородина, лакрица, ежевика."},
+ {q:"Хочу красное с низкой танинностью, лёгкое и питкое.",cat:"red",opts:["Domaine Lapalu Beaujolais","La Noblesse","Pla da Gates Negre","Bonarda Clasica"],a:0,why:"Domaine Lapalu Beaujolais (Гамэ) — легкое, питкое, низкая танинность, клубника, вишня. Культовое хозяйство Жан-Клода Лапалю."},
+ {q:"Красное к утке, посерьёзнее, со специями?",cat:"red",opts:["La Noblesse","Sopromadze Chkhaveri","Domaine Lapalu Beaujolais","Dzelshavi Nebieridze"],a:0,why:"La Noblesse (Сира, Гренаш, Кариньян; Лангедок) — утка, говядина. Вишня, смородина, специи, дерево. Биодинамическое."},
+ {q:"У вас есть оранжевое вино, тихое?",cat:"white",opts:["Sopromadze Tsolikouri–Tsitska–Krakhuna","Pet Nat Chinuri","Rkatsiteli Pheasants Tears","Sopromadze Tsitska"],a:0,why:"Sopromadze Tsolikouri–Tsitska–Krakhuna — оранжевое тихое: медово-сливочное, апельсиновая цедра, низкая бензольность. Pet Nat Chinuri тоже оранж, но игристый; Rkatsiteli — белое из квеври с оранжевым оттенком."},
+ {q:"Белое вино к красному мясу — такое бывает?",cat:"white",opts:["Да, Rkatsiteli Pheasants Tears — из квеври, плотное, подходит к курице и даже красному мясу","Нет, к мясу только красное","Только игристое","Pinot Chio"],a:0,why:"Rkatsiteli Pheasants Tears — вино из квеври, оранжевый оттенок, интенсивное тело, плотная структура, медово-мармеладные оттенки. Рекомендуют к курице и даже красному мясу."},
+ {q:"Рислинг — он с бензольными нотами?",cat:"white",opts:["Нет, молодой, без яркой бензольности — округлый, интенсивный, слегка тропический","Да, ярко бензольный","Это сладкий десертный рислинг","Он оранжевый из квеври"],a:0,why:"Riesling n16 (Peter Lauer, Германия) — молодой рислинг без яркой бензольности, очень округлый, интенсивный, слегка тропический и глубокий. Лемонграс, лимоны, сливочность, бисквит."},
+ {q:"Совиньон у вас сухой?",cat:"white",opts:["Стиль не сухого вина: гладко, фруктово, продолжительное послевкусие","Да, очень сухой и минеральный","Это игристое","Он из квеври"],a:0,why:"Sauvignon Blanc Laderas du Romeo 2024 (Испания) — стиль не сухого вина, гладко, фруктово. Тропики, маракуйя, персик, красное яблоко."},
+ {q:"Какое белое к сырам?",cat:"white",opts:["Pinot Chio","Rkatsiteli Pheasants Tears","Sopromadze Tsitska","Riesling n16"],a:0,why:"Pinot Chio (Pinot Blanc, Эльзас) — легкие блюда, морепродукты, сыры. Персик, цветы, ваниль; округлое тело."},
+ {q:"Вино из квеври с высокой кислотностью, к морепродуктам?",cat:"white",opts:["Tsolikouri Pheasants Tears","Rkatsiteli Pheasants Tears","Rokhster Tsitska Tsolikouri","Sauvignon Blanc Laderas du Romeo"],a:0,why:"Tsolikouri Pheasants Tears — три дня мацерации, 10 месяцев в квеври. Высокая кислотность, лайм, груша, минеральность. К легким блюдам и морепродуктам."},
+ {q:"Игристое к десерту есть?",cat:"spark",opts:["La Grange Tiphaine Nouveau Nez","Pet Nat Chinuri","Prosecco superiore","Balance Brut"],a:0,why:"La Grange Tiphaine Nouveau Nez (Шенин блан, Луара) — десерты, легкие блюда. Айва, марципан, лимон, хлеб; элегантная праздничная бутылка."},
+ {q:"Какое игристое к сендвичу с прошутто?",cat:"spark",opts:["Pet Nat x Salome Tsitska Otskhanuri MAGNUM","Cremant Louis Bouillot","Pet Nat Domaine Amberg","Antsi da Tseti Tsolikouri–Melqo"],a:0,why:"Pet Nat x Salome (розовый пет нат, We Are Ghvino) — сендвич с прошутто, тунцом, салаты. Брусника, клюква, клубника со сливками."},
+ {q:"Какие пет-наты у вас есть в большом формате?",cat:"spark",opts:["Pet Nat x Salome и Phoenix Tears Poliphonia — оба MAGNUM","Pet Nat Chinuri и Domaine Amberg","Все Antsi da Tseti","La Grange Tiphaine"],a:0,why:"В формате MAGNUM — Pet Nat x Salome Tsitska Otskhanuri (We Are Ghvino) и Phoenix Tears Pet Nat Poliphonia (Pheasants Tears, более ста сортов)."},
+ {q:"Игристое с медовыми нотами и высокой кислотностью?",cat:"spark",opts:["Pet Nat Domaine Amberg","Prosecco superiore","Phoenix Tears Pet Nat","Balance Brut"],a:0,why:"Pet Nat Domaine Amberg (Гевюрцтраминер, Пино блан; Эльзас) — много меда, грейпфрут, высокая кислотность. Органическое, метод ансестраль."},
+ {q:"Какую бутылку нужно открывать особенно осторожно?",cat:"spark",opts:["Pet Nat Chinuri — пробка размякла и уходит в осадок, всегда убирать часть","Carbonized Merlot — сильное давление","Prosecco — стреляет","Все MAGNUM"],a:0,why:"Pet Nat Chinuri — взрослый пет нат (7 лет). ВАЖНО: деревянная пробка уже размякла и уходит в осадок, нужно всегда убирать часть."},
+ {q:"Есть пиво с мандаринами?",cat:"beer",opts:["SVIA Tangerine Saison","SVIA Wit","SVIA Hazy IPA","Liefmans Fruitesse"],a:0,why:"SVIA Tangerine Saison — сезонный эль, в который при варке или созревании добавляют спелые мандарины; сочный и цитрусовый."},
+ {q:"Хочу IPA, но не горькое.",cat:"beer",opts:["SVIA Hazy IPA","SVIA Blonde Pale Ale","SVIA Wit","SVIA Tangerine Saison"],a:0,why:"SVIA Hazy IPA — мутный, сочный индийский пейл-эль: ананас, манго, маракуйя, без резкой обжигающей горечи."},
+ {q:"Есть вишнёвое или ягодное пиво?",cat:"beer",opts:["Liefmans Fruitesse","SVIA Wit","SVIA Blonde Pale Ale","SVIA Hazy IPA"],a:0,why:"Liefmans Fruitesse — легкое игристое фруктовое пиво (около 3,8%): вишня, малина, клубника, бузина, черника. Бельгийская пивоварня 1679 года."},
+ {q:"Самое лёгкое и мягкое пиво у вас?",cat:"beer",opts:["SVIA Wit — бельгийское пшеничное","SVIA Blonde Pale Ale","SVIA Hazy IPA","SVIA Tangerine Saison"],a:0,why:"SVIA Wit — классическое бельгийское пшеничное, очень мягкое и освежающее."},
+ {q:"Какой сидр самый сухой?",cat:"cider",opts:["Galipette Экстра Брют — сахар полностью отсутствует","Galipette Брют","Galipette Розе","Galipette Нон-алко"],a:0,why:"Экстра Брют — глубокое длительное брожение, купаж из 15+ сортов яблок Бретани, сахар сбраживается практически полностью, без пастеризации. Строгий, минеральный."},
+ {q:"Розовый сидр — это с красителем?",cat:"cider",opts:["Нет, цвет от мацерации яблок с красной мякотью, без красителей","Да, натуральный краситель","Это сидр с малиновым сиропом","Это смесь сидра и розового вина"],a:0,why:"Galipette Розе — метод кивинга, цвет благодаря мацерации яблок с красной мякотью, без красителей. Земляника, малина, красная смородина."},
+ {q:"Есть безалкогольный сидр?",cat:"cider",opts:["Да, Galipette Нон-алко — брожение прерывают на начальном этапе охлаждением и фильтрацией","Нет, только безалкогольное пиво","Только яблочный сок","Нет"],a:0,why:"Galipette Нон-алко — закрытое брожение прерывают резким охлаждением и фильтрацией. Свежевыжатый яблочный сок, мед, сладость запеченного яблока, без дрожжевого или спиртуозного тона."},
+ {q:"Из чего делают ваш сидр?",cat:"cider",opts:["100% яблочный сок прямого отжима, без концентрата, воды и сахара","Из концентрата с добавлением сахара","Из яблок и груш","Из яблочного сока с водой"],a:0,why:"Galipette — французский натуральный сидр из Нормандии и Бретани: 100% яблочный сок прямого отжима без добавления концентрированного сока, воды и сахара."},
+ {q:"Чем Брют отличается от Экстра Брюта?",cat:"cider",opts:["В Брюте брожение останавливают до полного сбраживания сахара — остается легкая природная сладость; в Экстра Брюте сахар отсутствует","Брют слаще, потому что добавляют сахар","Экстра Брют — газированный, Брют — нет","Разницы нет"],a:0,why:"Брют: брожение останавливают холодной фильтрацией до полного сбраживания сахара — сочное яблоко с легкой природной сладостью. Экстра Брют: сахар сбраживается практически полностью — строгий, минеральный."}
+];
+
+/* ---------- STATE ---------- */
+const KEY="pure-bistro-wine-v1";
+let S={known:{},errors:{},bestQuiz:null,bestGuest:null,rounds:0};
+try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+const view=document.getElementById("view");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const pick=(a,n)=>shuffle(a).slice(0,n);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const KEYS=["1","2","3","4","5","6","7"];
+
+function renderProgress(){
+  const known=Object.values(S.known).filter(Boolean).length;
+  const weak=Object.values(S.errors).filter(n=>n>0).length;
+  document.getElementById("progress").innerHTML=`Выучено <b>${known}</b>/${D.length}`+(weak?` · к повтору <b>${weak}</b>`:"");
+}
+function itemHTML(d,{compact=false}={}){
+  const f=FIELDS[d.cat].filter(([k])=>d[k]).map(([k,l])=>`<div class="k">${l}</div><div class="v ${k}">${esc(d[k])}</div>`).join("");
+  return `<div class="fields">${f}</div>
+  <div><div class="eyebrow" style="margin-bottom:6px">Букет</div><div class="tags">${d.notes.map(n=>`<span class="tag">${esc(n)}</span>`).join("")}</div></div>
+  ${d.desc?`<div class="desc"><span class="k">Описание</span>${esc(d.desc)}</div>`:""}
+  ${d.note?`<div class="note">${esc(d.note)}</div>`:""}`;
+}
+
+/* ---------- ROUTER ---------- */
+let mode="browse";
+document.getElementById("nav").addEventListener("click",e=>{const t=e.target.closest(".tab");if(!t)return;setMode(t.dataset.mode);});
+function setMode(m){mode=m;document.onkeydown=null;document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.mode===m));window.scrollTo({top:0});renderProgress();({browse,cards,quiz,guest,theory})[m]();}
+
+/* ---------- BROWSE ---------- */
+function browse(){
+  view.innerHTML=`<p class="lede">${WINE.length} вин, ${D.filter(d=>d.cat==="beer").length} сортов пива и ${D.filter(d=>d.cat==="cider").length} сидра. Учи по порядку из карты: сначала стиль и 2–3 ключевых вкуса, затем регион и сорт, потом сочетания с едой.</p>
+  <input class="search" id="q" type="search" placeholder="Найти: вино, сорт, регион, нота, блюдо…" autocomplete="off">
+  <div id="list"></div>`;
+  const list=view.querySelector("#list"),q=view.querySelector("#q");
+  const draw=()=>{
+    const s=q.value.trim().toLowerCase();
+    const f=D.filter(d=>!s||[d.name,d.winery,d.grape,d.region,d.style,d.food,d.made,d.desc,d.note,...(d.notes||[])].filter(Boolean).join(" ").toLowerCase().includes(s));
+    if(!f.length){list.innerHTML=`<div class="empty">Ничего не нашлось по «${esc(q.value)}»</div>`;return;}
+    list.innerHTML=Object.keys(CATS).map(c=>{
+      const items=f.filter(d=>d.cat===c);if(!items.length)return "";
+      return `<section class="group" data-cat="${c}"><div class="group-head"><h2>${CATS[c].name}</h2><span class="n">${items.length}</span></div>
+      ${CATS[c].intro&&!s?`<p class="intro">${esc(CATS[c].intro)}</p>`:""}
+      ${items.map(d=>`<article class="item"><h3>${esc(d.name)}</h3>${itemHTML(d)}</article>`).join("")}</section>`;
+    }).join("");
+  };
+  q.addEventListener("input",draw);draw();
+}
+
+/* ---------- FLASHCARDS ---------- */
+let cardFilter="all";
+function cards(){
+  const filters=[["all","Всё"],...Object.keys(CATS).map(c=>[c,CATS[c].name]),["weak","Только к повтору"]];
+  view.innerHTML=`<p class="lede">Прочитай название, вспомни стиль, букет и регион, нажми на карточку и проверь себя. «Знаю» убирает карточку в выученные, «Ещё повторю» вернёт её через пару карточек.</p>
+  <div class="chips" id="filters">${filters.map(([k,n])=>`<button class="chip" data-f="${k}" aria-pressed="${k===cardFilter}">${n}</button>`).join("")}</div><div id="deckwrap"></div>`;
+  view.querySelector("#filters").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cardFilter=b.dataset.f;cards();});
+  let base=cardFilter==="all"?D:cardFilter==="weak"?D.filter(d=>S.errors[d.id]>0||!S.known[d.id]):D.filter(d=>d.cat===cardFilter);
+  let deck=[...shuffle(base.filter(d=>!S.known[d.id])),...shuffle(base.filter(d=>S.known[d.id]))];
+  const total=deck.length;let done=0,side="front";
+  const wrap=view.querySelector("#deckwrap");
+  const draw=()=>{
+    if(!deck.length){wrap.innerHTML=`<div class="result"><div class="big">${total}<small> / ${total}</small></div><p>${total?"Колода пройдена. Выученные уходят в конец, «ещё повторю» всплывают снова.":"В этом фильтре карточек нет — всё выучено и без ошибок."}</p><div class="row"><button class="btn primary" id="again">Ещё раз</button><button class="btn" id="toquiz">Перейти к квизу</button></div></div>`;
+      wrap.querySelector("#again").onclick=cards;wrap.querySelector("#toquiz").onclick=()=>setMode("quiz");return;}
+    const d=deck[0];
+    wrap.innerHTML=`<div class="card" data-cat="${d.cat}" data-side="${side}" tabindex="0" role="button" aria-label="Перевернуть карточку">
+      <div class="top"><span class="cat">${CATS[d.cat].name}</span><span class="count">${done+1} / ${total}${S.known[d.id]?" · выучено":""}</span></div>
+      ${side==="front"?`<h2>${esc(d.name)}</h2><div class="front-hint">Стиль → 2–3 ноты букета → регион и сорт → с чем подавать. Нажми, чтобы проверить</div>`
+      :`<h2>${esc(d.name)}</h2><div class="back">${itemHTML(d)}</div>`}
+    </div>
+    <div class="actions">${side==="front"?`<button class="btn primary" id="flip">Показать карточку</button>`:
+      `<button class="btn bad" id="no">Ещё повторю</button><button class="btn good" id="yes">Знаю</button>`}</div>`;
+    const card=wrap.querySelector(".card");
+    const flip=()=>{side=side==="front"?"back":"front";draw();};
+    card.onclick=flip;card.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip();}};
+    if(side==="front")wrap.querySelector("#flip").onclick=flip;
+    else{
+      wrap.querySelector("#yes").onclick=()=>{S.known[d.id]=true;save();renderProgress();deck.shift();done++;side="front";draw();};
+      wrap.querySelector("#no").onclick=()=>{delete S.known[d.id];save();renderProgress();deck.shift();deck.splice(Math.min(3,deck.length),0,d);side="front";draw();};
+    }
+  };
+  draw();
+}
+
+/* ---------- QUIZ GENERATORS ---------- */
+const lc=s=>s.toLowerCase().replace(/\s*\(.*?\)\s*/g,"").trim();
+const ALL_NOTES=[...new Map(D.flatMap(d=>d.notes).map(n=>[lc(n),n])).values()];
+function distractorNotes(d,n){
+  const own=new Set(d.notes.map(lc));
+  const pool=ALL_NOTES.filter(x=>!own.has(lc(x)));
+  const sameCat=pool.filter(x=>D.some(o=>o.cat===d.cat&&o.id!==d.id&&o.notes.some(y=>lc(y)===lc(x))));
+  const seen=new Set();const out=[];
+  for(const x of [...shuffle(sameCat),...shuffle(pool)]){if(seen.has(lc(x)))continue;seen.add(lc(x));out.push(x);if(out.length>=n)break;}
+  return out;
+}
+function others(d,n,f){
+  const same=D.filter(o=>o.id!==d.id&&o.cat===d.cat&&f(o)),rest=D.filter(o=>o.id!==d.id&&o.cat!==d.cat&&f(o));
+  return [...shuffle(same),...shuffle(rest)].slice(0,n);
+}
+const FIELD_Q={winery:"Кто производит «%s»?",grape:"Сорт винограда в «%s»?",region:"Откуда «%s»?",style:"Стиль «%s»?",food:"С чем рекомендовать «%s»?"};
+function qField(d,k){
+  const seen=new Set([lc(d[k])]);
+  const o=others(d,3,x=>{if(!x[k]||seen.has(lc(x[k])))return false;seen.add(lc(x[k]));return true;});
+  if(o.length<3)return null;
+  const opts=shuffle([d,...o].map(x=>x[k]));
+  return {type:"mc",drink:d,title:FIELD_Q[k].replace("%s",d.name),sub:CATS[d.cat].name,opts,a:opts.indexOf(d[k])};
+}
+function qNotesName(d){
+  const o=others(d,3,x=>x.notes.join()!==d.notes.join());
+  const opts=shuffle([d,...o].map(x=>x.name));
+  return {type:"mc",drink:d,title:"Что это?",sub:CATS[d.cat].name,quote:d.notes.join(", "),who:"Букет",opts,a:opts.indexOf(d.name)};
+}
+function qDescName(d){
+  const o=others(d,3,()=>true);const opts=shuffle([d,...o].map(x=>x.name));
+  return {type:"mc",drink:d,title:"О чём речь?",sub:CATS[d.cat].name,quote:d.desc,who:"Описание",opts,a:opts.indexOf(d.name)};
+}
+function qOdd(d){
+  const extra=distractorNotes(d,1)[0];const opts=shuffle([...d.notes,extra]);
+  return {type:"mc",drink:d,title:`Что лишнее в букете «${d.name}»?`,sub:"Одна нота здесь из другой позиции карты",opts,a:opts.indexOf(extra)};
+}
+function qCompose(d){
+  const n=d.notes.length>=5?3:4;const pool=shuffle([...d.notes,...distractorNotes(d,n)]);
+  return {type:"compose",drink:d,title:`Собери букет «${d.name}»`,sub:`Выбери все ноты — их ${d.notes.length}`,pool};
+}
+function makeRound(n,onlyWeak){
+  let src=onlyWeak?D.filter(d=>S.errors[d.id]>0):D;if(src.length<3)src=D;
+  const drinks=[];while(drinks.length<n)drinks.push(...shuffle(src));
+  return drinks.slice(0,n).map(d=>{
+    const gens=[()=>qNotesName(d),()=>qDescName(d)];
+    if(d.notes.length>=3){gens.push(()=>qOdd(d),()=>qCompose(d));}
+    if(WINE.includes(d)){["grape","region","style","winery"].forEach(k=>gens.push(()=>qField(d,k)));if(d.food)gens.push(()=>qField(d,"food"));}
+    else if(d.cat==="beer")gens.push(()=>qField(d,"style"));
+    let q=null,tries=0;while(!q&&tries++<8)q=gens[Math.floor(Math.random()*gens.length)]();
+    return q||qNotesName(d);
+  });
+}
+
+/* ---------- QUIZ RUNNER ---------- */
+function runQuiz({items,label,onEnd}){
+  let i=0,score=0;const mistakes=[];
+  const step=()=>{
+    if(i>=items.length){onEnd(score,mistakes);return;}
+    const it=items[i];
+    view.innerHTML=`<div class="qhead"><span>${label} · ${i+1} из ${items.length}</span><span>Верно: ${score}</span></div>
+    <div class="bar"><i style="width:${i/items.length*100}%"></i></div>
+    <div data-cat="${it.drink?it.drink.cat:(it.cat||"")}">
+      ${it.quote?`<blockquote class="quote"><span class="who">${it.who||"Из карты"}</span>${esc(it.quote)}</blockquote>`:""}
+      <h2 class="question">${esc(it.title)}</h2>${it.sub?`<p class="qsub">${esc(it.sub)}</p>`:""}
+      <div id="body"></div><div id="fb"></div><div id="next"></div>
+    </div>`;
+    const body=view.querySelector("#body"),fb=view.querySelector("#fb"),nx=view.querySelector("#next");
+    const finish=(ok,extraHTML)=>{
+      if(ok)score++;else mistakes.push(it);
+      if(it.drink){if(ok){if(S.errors[it.drink.id]>0)S.errors[it.drink.id]--;}else S.errors[it.drink.id]=(S.errors[it.drink.id]||0)+1;save();renderProgress();}
+      fb.innerHTML=`<div class="feedback" data-ok="${ok?1:0}"><div class="verdict">${ok?"Верно":"Не совсем"}</div>${extraHTML}</div>`;
+      nx.innerHTML=`<div class="actions"><button class="btn primary" id="go">${i+1<items.length?"Дальше":"К результату"}</button></div>`;
+      const go=()=>{i++;step();};view.querySelector("#go").onclick=go;view.querySelector("#go").focus();
+      document.onkeydown=e=>{if(e.key==="Enter"){document.onkeydown=null;go();}};
+    };
+    const drinkCard=d=>`<h3>${esc(d.name)}</h3>${itemHTML(d)}`;
+    if(it.type==="mc"){
+      body.innerHTML=`<div class="options">${it.opts.map((o,k)=>`<button class="opt" data-k="${k}"><span class="key">${KEYS[k]}</span><span>${esc(o)}</span></button>`).join("")}</div>`;
+      const choose=k=>{
+        const btns=[...body.querySelectorAll(".opt")];btns.forEach(b=>b.disabled=true);
+        btns[it.a].dataset.state="right";if(k!==it.a)btns[k].dataset.state="wrong";btns.forEach((b,j)=>{if(j!==it.a&&j!==k)b.dataset.state="dim";});
+        finish(k===it.a,it.why?`<div>${esc(it.why)}</div>`:drinkCard(it.drink));
+      };
+      body.onclick=e=>{const b=e.target.closest(".opt");if(b&&!b.disabled)choose(+b.dataset.k);};
+      document.onkeydown=e=>{const k=KEYS.indexOf(e.key);if(k>-1&&k<it.opts.length){document.onkeydown=null;choose(k);}};
+    }else{
+      const sel=new Set();
+      body.innerHTML=`<div class="ings">${it.pool.map((p,k)=>`<button class="ing" data-k="${k}" aria-pressed="false">${esc(p)}</button>`).join("")}</div><div class="actions"><button class="btn primary" id="chk" disabled>Проверить</button></div>`;
+      const chk=body.querySelector("#chk");
+      body.onclick=e=>{const b=e.target.closest(".ing");if(!b||b.disabled)return;const k=+b.dataset.k;sel.has(k)?sel.delete(k):sel.add(k);b.setAttribute("aria-pressed",sel.has(k));chk.disabled=!sel.size;};
+      chk.onclick=()=>{
+        const correct=new Set(it.drink.notes);let ok=true;
+        body.querySelectorAll(".ing").forEach(b=>{const k=+b.dataset.k,isC=correct.has(it.pool[k]),s=sel.has(k);b.disabled=true;
+          if(isC&&s)b.dataset.state="right";else if(!isC&&s){b.dataset.state="wrong";ok=false;}else if(isC&&!s){b.dataset.state="missed";ok=false;}else b.style.opacity=.4;});
+        chk.remove();finish(ok,drinkCard(it.drink));
+      };
+      document.onkeydown=null;
+    }
+  };
+  step();
+}
+function resultScreen({score,total,mistakes,best,onAgain,onWeak,againLabel}){
+  document.onkeydown=null;
+  view.innerHTML=`<div class="result"><div class="eyebrow">Результат</div><div class="big">${score}<small> / ${total}</small></div>
+  <p>${score===total?"Чисто. Так и рассказывай гостям.":score>=total*0.7?"Хорошо. Осталось добить несколько позиций.":"Есть над чем поработать — открой карточки к повтору."}${best!=null?` Лучший результат: ${best} / ${total}.`:""}</p>
+  ${mistakes.length?`<div class="eyebrow" style="text-align:left;margin-bottom:8px">Разобрать</div><div class="mistakes">${mistakes.map(m=>`<div class="m" data-cat="${m.drink?m.drink.cat:m.cat}">${m.drink?`<b>${esc(m.drink.name)}</b><div>${esc(m.drink.style||m.drink.made||"")}</div><div class="desc">${esc(m.drink.notes.join(", "))}${m.drink.region?" · "+esc(m.drink.region):""}${m.drink.grape?" · "+esc(m.drink.grape):""}</div>`:`<b>${esc(m.quote)}</b><div class="desc">${esc(m.why)}</div>`}</div>`).join("")}</div>`:""}
+  <div class="row"><button class="btn primary" id="again">${againLabel||"Ещё раунд"}</button>${onWeak?`<button class="btn" id="weak">Только мои ошибки</button>`:""}</div></div>`;
+  view.querySelector("#again").onclick=onAgain;if(onWeak)view.querySelector("#weak").onclick=onWeak;
+}
+
+/* ---------- QUIZ ---------- */
+function quiz(){
+  const weak=D.filter(d=>S.errors[d.id]>0);
+  view.innerHTML=`<p class="lede">10 вопросов на раунд: узнай позицию по букету или описанию, назови сорт, регион, стиль и производителя, найди лишнюю ноту, собери букет. Ошибки запоминаются — их можно прогнать отдельно.</p>
+  <div class="stats"><div class="stat"><div class="v">${S.bestQuiz==null?"—":S.bestQuiz+"/10"}</div><div class="l">лучший раунд</div></div><div class="stat"><div class="v">${S.rounds}</div><div class="l">раундов сыграно</div></div><div class="stat"><div class="v">${weak.length}</div><div class="l">позиций к повтору</div></div></div>
+  ${weak.length?`<div class="eyebrow" style="margin-bottom:8px">Чаще всего ошибаюсь</div><div class="weak">${weak.sort((a,b)=>S.errors[b.id]-S.errors[a.id]).slice(0,6).map(d=>`<div class="w" data-cat="${d.cat}"><span>${esc(d.name)}</span><span class="e">${S.errors[d.id]} ${S.errors[d.id]===1?"ошибка":S.errors[d.id]<5?"ошибки":"ошибок"}</span></div>`).join("")}</div>`:""}
+  <div class="row"><button class="btn primary" id="start">Начать раунд</button>${weak.length>=3?`<button class="btn" id="startweak">Только мои ошибки</button>`:""}</div>
+  <p class="hint" style="margin-top:14px">Подсказка: варианты можно выбирать клавишами 1–7, «Дальше» — Enter.</p>`;
+  const go=onlyWeak=>runQuiz({items:makeRound(10,onlyWeak),label:onlyWeak?"Мои ошибки":"Квиз",onEnd:(score,mistakes)=>{
+    S.rounds++;if(!onlyWeak&&(S.bestQuiz==null||score>S.bestQuiz))S.bestQuiz=score;save();
+    resultScreen({score,total:10,mistakes,best:S.bestQuiz,onAgain:()=>go(false),onWeak:D.some(d=>S.errors[d.id]>0)?()=>go(true):null});
+  }});
+  view.querySelector("#start").onclick=()=>go(false);const w=view.querySelector("#startweak");if(w)w.onclick=()=>go(true);
+}
+
+/* ---------- GUEST ---------- */
+function guest(){
+  view.innerHTML=`<p class="lede">Гость задаёт вопрос — выбери, что ответить. Здесь же теория: методы игристых, температуры подачи, чем брют отличается от экстра брюта.</p>
+  <div class="stats"><div class="stat"><div class="v">${S.bestGuest==null?"—":S.bestGuest+"/10"}</div><div class="l">лучший результат</div></div><div class="stat"><div class="v">${GUEST.length}</div><div class="l">вопросов в базе</div></div><div class="stat"><div class="v">10</div><div class="l">за раунд</div></div></div>
+  <div class="row"><button class="btn primary" id="start">Начать</button></div>`;
+  const go=()=>{
+    const items=pick(GUEST,10).map(g=>{const opts=shuffle(g.opts);return {type:"mc",cat:g.cat,title:"Что ответить?",quote:g.q,who:"Гость",opts,a:opts.indexOf(g.opts[g.a]),why:g.why};});
+    runQuiz({items,label:"Гость спрашивает",onEnd:(score,mistakes)=>{if(S.bestGuest==null||score>S.bestGuest)S.bestGuest=score;save();
+      resultScreen({score,total:10,mistakes,best:S.bestGuest,onAgain:go,againLabel:"Ещё 10 вопросов"});}});
+  };
+  view.querySelector("#start").onclick=go;
+}
+
+/* ---------- THEORY ---------- */
+function theory(){
+  view.innerHTML=`<p class="lede">Справочная часть карты: как делают игристые, при какой температуре подавать, и как учить быстрее.</p>
+  <h2 class="sec">Игристые вина</h2>
+  <div class="tbl">${THEORY.map(([k,v])=>`<div class="k">${esc(k)}</div><div class="v">${v.includes("\n")?esc(v).replace(/^([^:\n]{3,30}):/gm,'<span class="t">$1:</span>'):esc(v)}</div>`).join("")}</div>
+  <h2 class="sec">Температура подачи</h2>
+  <div class="tbl">${TEMPS.map(([k,v])=>`<div class="k">${esc(k)}</div><div class="v">${esc(v)}</div>`).join("")}</div>
+  <h2 class="sec">Как учить быстрее</h2>
+  <ol class="tips"><li>Сначала запоминай стиль + 2–3 ключевых вкуса.</li><li>Затем добавляй регион и сорт.</li><li>В последнюю очередь — сочетания с едой и подробное описание.</li><li>Закрой правую часть карточки и попробуй воспроизвести её по названию — для этого есть вкладка «Карточки».</li></ol>
+  <div class="row"><button class="reset" id="reset">Сбросить весь прогресс</button></div>`;
+  view.querySelector("#reset").onclick=()=>{S={known:{},errors:{},bestQuiz:null,bestGuest:null,rounds:0};save();renderProgress();theory();};
+}
+
+setMode("browse");
+</script>
+
+</body>
+</html>

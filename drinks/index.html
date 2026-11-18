@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
+<title>Pure Bistro Напитки</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Golos+Text:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#FFFFFF; --surface:#F6F4F0; --surface-2:#EDE9E2; --ink:#201A16; --muted:#6F665E; --line:#E4DFD7; --line-strong:#CFC7BC;
+  --accent:#3B2A22; --accent-ink:#FFFFFF; --accent-soft:#EFE7DF;
+  --good:#2E7D4F; --good-soft:#E3F2E8; --bad:#BF4538; --bad-soft:#F9E5E2; --warn:#B7791F; --warn-soft:#FBF0DC;
+  --c-coffee:#8A5A3C; --c-tea:#4E7C4A; --c-smoothie:#A64E7B; --c-cold:#3F7A9E; --c-signature:#C27A2C;
+  --c-coffee-soft:#F1E7DF; --c-tea-soft:#E6EFE3; --c-smoothie-soft:#F4E4EC; --c-cold-soft:#E2EDF3; --c-signature-soft:#F7EAD9;
+  --shadow:0 10px 30px rgba(32,26,22,.10), 0 2px 6px rgba(32,26,22,.06);
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#151110; --surface:#1F1A17; --surface-2:#2A241F; --ink:#F2EDE6; --muted:#A79E93; --line:#332C26; --line-strong:#4A413A;
+    --accent:#E9DCCB; --accent-ink:#1B140F; --accent-soft:#2E261F;
+    --good:#6CC08F; --good-soft:#1C3227; --bad:#F08B7E; --bad-soft:#3A1F1B; --warn:#E3B05A; --warn-soft:#3A2F1A;
+    --c-coffee:#D2A07B; --c-tea:#8FC085; --c-smoothie:#E28FBC; --c-cold:#84BCDD; --c-signature:#F0B061;
+    --c-coffee-soft:#2E241D; --c-tea-soft:#1F2B1E; --c-smoothie-soft:#33202B; --c-cold-soft:#1C2A33; --c-signature-soft:#352819;
+    --shadow:0 10px 30px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#151110; --surface:#1F1A17; --surface-2:#2A241F; --ink:#F2EDE6; --muted:#A79E93; --line:#332C26; --line-strong:#4A413A;
+  --accent:#E9DCCB; --accent-ink:#1B140F; --accent-soft:#2E261F;
+  --good:#6CC08F; --good-soft:#1C3227; --bad:#F08B7E; --bad-soft:#3A1F1B; --warn:#E3B05A; --warn-soft:#3A2F1A;
+  --c-coffee:#D2A07B; --c-tea:#8FC085; --c-smoothie:#E28FBC; --c-cold:#84BCDD; --c-signature:#F0B061;
+  --c-coffee-soft:#2E241D; --c-tea-soft:#1F2B1E; --c-smoothie-soft:#33202B; --c-cold-soft:#1C2A33; --c-signature-soft:#352819;
+  --shadow:0 10px 30px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);-webkit-font-smoothing:antialiased;min-height:100vh}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance;letter-spacing:-.01em}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+
+/* header */
+header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:14px 0 6px}
+.brand h1{font-size:17px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+@media (max-width:400px){.brand h1 span{display:none}}
+.brand h1 span{color:var(--muted);font-weight:500}
+.progress{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right}
+.progress b{color:var(--ink);font-weight:600}
+nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:6px 0 10px;margin:0 -16px;padding-left:16px;padding-right:16px}
+nav::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:8px 14px;border-radius:999px;font-weight:500;font-size:14px;color:var(--muted);border:1px solid transparent;transition:background .15s,color .15s}
+.tab:hover{background:var(--surface)}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+
+main{padding:22px 0 60px}
+.lede{color:var(--muted);font-size:15px;max-width:60ch;margin:0 0 18px}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+
+/* category badges */
+.cat{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--cc);padding:3px 9px;border-radius:999px;background:var(--cs)}
+.cat::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cc)}
+[data-cat="coffee"]{--cc:var(--c-coffee);--cs:var(--c-coffee-soft)}
+[data-cat="tea"]{--cc:var(--c-tea);--cs:var(--c-tea-soft)}
+[data-cat="smoothie"]{--cc:var(--c-smoothie);--cs:var(--c-smoothie-soft)}
+[data-cat="cold"]{--cc:var(--c-cold);--cs:var(--c-cold-soft)}
+[data-cat="signature"]{--cc:var(--c-signature);--cs:var(--c-signature-soft)}
+
+/* browse */
+.search{width:100%;padding:12px 14px;border:1px solid var(--line-strong);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit;margin-bottom:22px}
+.search::placeholder{color:var(--muted)}
+.group{margin:0 0 30px}
+.group-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.group-head h2{font-size:15px;font-weight:600;color:var(--cc)}
+.group-head .n{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.group-head::after{content:"";flex:1;height:1px;background:var(--line)}
+.drink{padding:14px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr;gap:6px}
+.drink:last-child{border-bottom:0}
+.drink h3{font-size:16px;font-weight:600}
+.comp{font-weight:500}
+.comp .k,.desc .k{color:var(--muted);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-right:6px}
+.desc{color:var(--muted);font-size:15px}
+.note{display:inline-flex;gap:8px;align-items:flex-start;font-size:14px;background:var(--warn-soft);color:var(--ink);padding:6px 10px;border-radius:8px;margin-top:2px;width:fit-content;max-width:100%}
+.note::before{content:"!";font-family:var(--display);font-weight:700;color:var(--warn);flex:0 0 auto}
+.empty{color:var(--muted);padding:30px 0;text-align:center}
+.hint{color:var(--muted);font-size:14px}
+
+/* chips row */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{padding:6px 12px;border-radius:999px;border:1px solid var(--line-strong);font-size:14px;color:var(--muted);background:var(--bg)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* flashcard */
+.card{background:var(--surface);border-radius:20px;box-shadow:var(--shadow);padding:28px 24px;min-height:300px;display:flex;flex-direction:column;gap:14px;cursor:pointer;position:relative;border:1px solid var(--line)}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.card .count{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.card h2{font-size:clamp(24px,5.5vw,34px);font-weight:600;line-height:1.15;margin-top:auto}
+.card .front-hint{color:var(--muted);font-size:14px;margin-bottom:auto}
+.card .back{display:flex;flex-direction:column;gap:12px;margin-bottom:auto}
+.card .back .comp{font-size:17px}
+.card .back .desc{font-size:15px}
+.card[data-side="back"] h2{margin-top:0;font-size:22px}
+.actions{display:flex;gap:10px;margin-top:16px}
+.btn{flex:1;padding:14px 16px;border-radius:14px;font-weight:600;font-size:15px;border:1px solid var(--line-strong);background:var(--bg);transition:transform .08s}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.good{border-color:var(--good);color:var(--good)}
+.btn.bad{border-color:var(--bad);color:var(--bad)}
+.btn.ghost{border-color:transparent;color:var(--muted)}
+.btn[disabled]{opacity:.45;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* quiz */
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:4px;background:var(--surface-2);border-radius:2px;overflow:hidden;margin-bottom:22px}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.question{font-family:var(--display);font-size:clamp(18px,4.6vw,24px);font-weight:600;line-height:1.25;margin:0 0 6px}
+.qsub{color:var(--muted);margin:0 0 20px;font-size:15px}
+.quote{background:var(--surface);border-left:3px solid var(--cc,var(--accent));padding:14px 16px;border-radius:0 14px 14px 0;margin:0 0 20px;font-size:17px;line-height:1.45}
+.quote .who{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:4px}
+.options{display:grid;gap:10px}
+.opt{text-align:left;padding:14px 16px;border-radius:14px;border:1px solid var(--line-strong);background:var(--bg);font-size:15px;line-height:1.4;display:flex;gap:12px;align-items:flex-start;transition:border-color .15s,background .15s}
+.opt .key{flex:0 0 22px;height:22px;border-radius:6px;background:var(--surface-2);color:var(--muted);font-size:12px;font-weight:600;display:grid;place-items:center;margin-top:1px}
+.opt:hover:not([disabled]){border-color:var(--ink)}
+.opt[data-state="right"]{border-color:var(--good);background:var(--good-soft)}
+.opt[data-state="wrong"]{border-color:var(--bad);background:var(--bad-soft)}
+.opt[data-state="dim"]{opacity:.5}
+.opt[disabled]{cursor:default}
+.ings{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.ing{padding:9px 14px;border-radius:999px;border:1px solid var(--line-strong);font-size:15px;background:var(--bg);transition:background .12s}
+.ing[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.ing[data-state="right"]{background:var(--good-soft);border-color:var(--good);color:var(--ink)}
+.ing[data-state="wrong"]{background:var(--bad-soft);border-color:var(--bad);color:var(--ink);text-decoration:line-through}
+.ing[data-state="missed"]{background:var(--bg);border:1px dashed var(--good);color:var(--good)}
+.ing[disabled]{cursor:default}
+.feedback{margin-top:18px;padding:16px;border-radius:14px;background:var(--surface);border:1px solid var(--line);display:grid;gap:8px;font-size:15px}
+.feedback .verdict{font-family:var(--display);font-weight:600;font-size:15px}
+.feedback[data-ok="1"] .verdict{color:var(--good)}
+.feedback[data-ok="0"] .verdict{color:var(--bad)}
+.feedback .comp{font-size:15px}
+
+/* result */
+.result{text-align:center;padding:20px 0 10px}
+.result .big{font-family:var(--display);font-size:clamp(44px,14vw,72px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.result .big small{font-size:.4em;color:var(--muted);font-weight:600}
+.result p{color:var(--muted);margin:10px auto 22px;max-width:44ch}
+.mistakes{text-align:left;display:grid;gap:10px;margin:0 0 22px}
+.mistakes .m{padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.mistakes .m b{font-weight:600}
+.mistakes .m .comp{font-size:14px;margin-top:4px}
+
+/* self-check */
+.sc{border-bottom:1px solid var(--line);padding:16px 0}
+.sc:last-child{border-bottom:0}
+.sc .q{font-weight:600;margin-bottom:8px;display:flex;gap:12px;align-items:baseline}
+.sc .q .num{font-family:var(--display);font-size:13px;color:var(--muted);flex:0 0 22px}
+.sc .a{display:none;background:var(--surface);padding:12px 14px;border-radius:12px;font-size:15px;margin-top:8px}
+.sc[data-open="1"] .a{display:block}
+.sc .reveal{font-size:14px;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 24px}
+.stat{background:var(--surface);border-radius:14px;padding:14px;border:1px solid var(--line)}
+.stat .v{font-family:var(--display);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .l{font-size:12px;color:var(--muted);margin-top:4px}
+.weak{display:grid;gap:8px;margin-bottom:24px}
+.weak .w{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:12px;border:1px solid var(--line);font-size:15px}
+.weak .w .e{color:var(--bad);font-size:13px;font-variant-numeric:tabular-nums}
+.reset{color:var(--muted);font-size:13px;text-decoration:underline;text-underline-offset:3px}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+@media (max-width:480px){.stats{grid-template-columns:1fr 1fr 1fr}.stat .v{font-size:20px}}
+.brand h1 a.home{color:inherit;text-decoration:none}
+.brand h1 a.home::before{content:"← ";color:var(--muted);font-weight:500}
+.brand h1 a.home:hover{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <h1><a class="home" href="../" title="Все разделы">PURE BISTRO</a> <span>· напитки</span></h1>
+      <div class="progress" id="progress"></div>
+    </div>
+    <nav role="tablist" id="nav">
+      <button class="tab" role="tab" data-mode="browse">Меню</button>
+      <button class="tab" role="tab" data-mode="cards">Карточки</button>
+      <button class="tab" role="tab" data-mode="quiz">Квиз</button>
+      <button class="tab" role="tab" data-mode="guest">Гость спрашивает</button>
+      <button class="tab" role="tab" data-mode="check">Самопроверка</button>
+    </nav>
+  </div>
+</header>
+<main><div class="wrap" id="view"></div></main>
+
+<script>
+/* ---------- DATA (из учебного файла Pure Bistro) ---------- */
+const CATS = {
+  coffee:{name:"Кофе и горячие"}, tea:{name:"Чай"}, smoothie:{name:"Смузи"},
+  cold:{name:"Холодный кофе и матча"}, signature:{name:"Авторские напитки и лимонады"}
+};
+const D = [
+ {id:"espresso",cat:"coffee",name:"Эспрессо",comp:"Сорт кофе часто меняется, уточнять на баре",ings:null,desc:"Насыщенный крепкий шот кофе, приготовленный в кофемашине",note:"Сорт кофе часто меняется — уточняй на баре"},
+ {id:"americano",cat:"coffee",name:"Американо",comp:"Эспрессо, разбавленный горячей водой",ings:["Эспрессо","Горячая вода"],desc:null},
+ {id:"filter",cat:"coffee",name:"Фильтр кофе",comp:"Сорт кофе часто меняется, уточнять на баре",ings:null,desc:"Насыщенный черный кофе, приготовленный в капельной кофеварке",note:"Сорт кофе часто меняется — уточняй на баре"},
+ {id:"cappuccino",cat:"coffee",name:"Капучино",comp:"Эспрессо, молоко",ings:["Эспрессо","Молоко"],desc:"Сбалансированный кофейно-молочный напиток"},
+ {id:"latte",cat:"coffee",name:"Латте",comp:"Эспрессо, молоко",ings:["Эспрессо","Молоко"],desc:"Более молочный кофейно-молочный напиток"},
+ {id:"flat",cat:"coffee",name:"Флет уайт",comp:"Эспрессо, молоко",ings:["Эспрессо","Молоко"],desc:"Более крепкий кофейно-молочный напиток с тонкой пеной и объем 0,2",note:"Крепче капучино и латте, тонкая пена, объём 0,2"},
+ {id:"raf",cat:"coffee",name:"Раф",comp:"Эспрессо, жирные сливки, молоко, соленая карамель",ings:["Эспрессо","Жирные сливки","Молоко","Соленая карамель"],desc:"Сливочный, нежный кофейный напиток с карамелью, можно презентовать как сладкий десерт в жидком виде",note:"Презентуй как сладкий десерт в жидком виде"},
+ {id:"matcha-latte",cat:"coffee",name:"Матча латте",comp:"Матча, молоко",ings:["Матча","Молоко"],desc:"Японская церемониальная матча (перетертые спелые чайные листья) в сочетании с молоком. Можем приготовить матча шот или матча американо",note:"Можем сделать матча шот или матча американо"},
+ {id:"cocoa",cat:"coffee",name:"Какао",comp:"Какао порошок, молоко",ings:["Какао порошок","Молоко"],desc:"Перетертые перуанские какао бобы и порция молока. Всегда уточняем сахар",note:"Всегда уточняем сахар"},
+ {id:"tea",cat:"tea",name:"Чай",comp:"Ассортимент листовых чаев",ings:null,desc:"Ассам — черный; Те Гуань инь — японский зеленый освежающий чай; Эрл грей — черный с бергамотом; Да хун пао — китайский, плотный, слегка землянистый и карамельный; Жень шень — улун с цветочными оттенками; Граф Орлов — черный чай, лепестки василька, лепестки шафрана, малина и смородина; Травяной чай — микс всех трав"},
+ {id:"buckwheat",cat:"tea",name:"Гречишный чай",comp:"Татарская гречиха",ings:["Татарская гречиха"],desc:"Чай из гранул татарской гречихи, обладает вкусом шоколада и печенья"},
+ {id:"purple",cat:"smoothie",name:"Фиолетовый смузи",comp:"Смородина, вишня, кокосовое молоко, банан, сахарный сироп",ings:["Смородина","Вишня","Кокосовое молоко","Банан","Сахарный сироп"],desc:"Легкий ягодный смузи на кокосовом молоке (можем убрать сахар по желанию)",note:"Можем убрать сахар по желанию"},
+ {id:"orange-sm",cat:"smoothie",name:"Оранжевый смузи",comp:"Морковь, яблоко, банан, кокосовое молоко, пюре манго",ings:["Морковь","Яблоко","Банан","Кокосовое молоко","Пюре манго"],desc:"Более плотный смузи со сладко-тропическими нотами"},
+ {id:"esp-tonic",cat:"cold",name:"Эспрессо-тоник",comp:"Двойной эспрессо, тоник, лед, лайм",ings:["Двойной эспрессо","Тоник","Лед","Лайм"],desc:"Классический холодный напиток на основе сухого тоника. Шипучий, освежающий"},
+ {id:"bumble",cat:"cold",name:"Бамбл",comp:"Двойной эспрессо, апельсиновый фреш, лед (карамель опционально)",ings:["Двойной эспрессо","Апельсиновый фреш","Лед","Карамель (опционально)"],desc:"Кофейная холодная классика: холодный кофе с апельсиновым фрешем, освежающе и кисло-сладко. Уточняем про карамель",note:"Карамель опционально — уточняем у гостя"},
+ {id:"ice-latte",cat:"cold",name:"Айс латте",comp:"ОДИНАРНЫЙ ЭСПРЕССО, молоко, лед",ings:["Одинарный эспрессо","Молоко","Лед"],desc:null,note:"ОДИНАРНЫЙ эспрессо — не двойной"},
+ {id:"ice-matcha",cat:"cold",name:"Айс матча латте",comp:"Шот матча, лед, молоко",ings:["Шот матча","Лед","Молоко"],desc:"Холодная матча с молоком"},
+ {id:"matcha-tonic",cat:"cold",name:"Матча тоник",comp:"Шот матча, лед, тоник, лайм",ings:["Шот матча","Лед","Тоник","Лайм"],desc:"Холодная освежающая матча с индиан тоником, более цитрусово-чайный, чем эспрессо тоник",note:"Более цитрусово-чайный, чем эспрессо-тоник"},
+ {id:"brazil",cat:"signature",name:"Бразильский лимонад",comp:"Сгущенка, лаймовый кордиал (менее сладкий сироп), газировка, лайм",ings:["Сгущенка","Лаймовый кордиал","Газировка","Лайм"],desc:"Сливочный, со сливочной текстурой и лаймовой кислинкой лимонад",note:"Лаймовый кордиал — менее сладкий сироп"},
+ {id:"ice-tea-lemon",cat:"signature",name:"Айс чай лимон-ваниль",comp:"Лимонный кордиал с ванилью, те гуань инь, пена из манго",ings:["Лимонный кордиал с ванилью","Те гуань инь","Пена из манго"],desc:"Яркий лимонно-ванильный чай на основе зеленого чая, украшенный сливочной пеной из манго"},
+ {id:"creamy-mango",cat:"signature",name:"Крими манго матча латте",comp:"Сгущенка, лаймовый кордиал, матча шот, кокосовое молоко, соус из манго",ings:["Сгущенка","Лаймовый кордиал","Матча шот","Кокосовое молоко","Соус из манго"],desc:"Сливочная, кремовая матча на кокосовом молоке с ярким тропическим вкусом манго"},
+ {id:"filter-orange",cat:"signature",name:"Фильтр красный апельсин",comp:"Фильтр кофе, лед, соус из красного апельсина",ings:["Фильтр кофе","Лед","Соус из красного апельсина"],desc:"Холодный фильтр кофе с соусом из сицилийского апельсина"},
+ {id:"citrus-latte",cat:"signature",name:"Цитрусовый айс латте",comp:"Шот эспрессо, лимонный кордиал, сгущенка, лаймовый кордиал, овсяное молоко",ings:["Шот эспрессо","Лимонный кордиал","Сгущенка","Лаймовый кордиал","Овсяное молоко"],desc:"Айс латте с цитрусовыми оттенками, напоминающий лимонное овсяное печенье",note:"На овсяном молоке"},
+ {id:"jp-cola",cat:"signature",name:"Японская кола",comp:"Сироп колы из микса специй, цитрусов, сахара тростникового и мусковадо, лимонный сок, газированная вода",ings:["Сироп колы (специи, цитрусы, тростниковый сахар и мусковадо)","Лимонный сок","Газированная вода"],desc:"Хэндмейд кола в японском стиле: самодельный сироп из специй, цитрусов и двух видов сахара. Добавляем лимонный сок, газированную воду, и получается яркий пряно-цитрусовый лимонад",note:"Два вида сахара: тростниковый и мусковадо"},
+ {id:"currant-orange",cat:"signature",name:"Лимонад смородина-апельсин",comp:"Сироп из смородины, апельсиновый фреш, газированная вода, лимонный сок, сахар",ings:["Сироп из смородины","Апельсиновый фреш","Газированная вода","Лимонный сок","Сахар"],desc:"Ягодно-апельсиновый лимонад с яркой кислинкой, напоминающий фанту на максималках",note:"«Фанта на максималках»"},
+ {id:"peach-tea",cat:"signature",name:"Айс чай персик-мед-жасмин",comp:"Чай жасмин, сироп из персика, лаймовый кордиал, медовый сироп",ings:["Чай жасмин","Сироп из персика","Лаймовый кордиал","Медовый сироп"],desc:"Холодный цветочный чай со вкусом медового персика, украшенный пеной из манго",note:"Украшен пеной из манго"}
+];
+const byId = Object.fromEntries(D.map(d=>[d.id,d]));
+
+/* Вопросы гостей: формулировки ответов — из описаний в файле */
+const GUEST = [
+ {q:"Хочу что-нибудь сладкое и сливочное, как десерт, но чтобы с кофе.",cat:"coffee",opts:["Раф","Латте","Капучино","Флет уайт"],a:0,why:"Раф — эспрессо, жирные сливки, молоко и соленая карамель. Его можно презентовать как сладкий десерт в жидком виде."},
+ {q:"Есть что-то холодное, шипучее и с кофе?",cat:"cold",opts:["Эспрессо-тоник","Айс латте","Бамбл","Фильтр красный апельсин"],a:0,why:"Эспрессо-тоник — двойной эспрессо, тоник, лед, лайм. Классика на сухом тонике: шипучий, освежающий."},
+ {q:"А чем флет уайт отличается от капучино?",cat:"coffee",opts:["Он крепче, с тонкой пеной, объём 0,2","В нём больше молока","То же самое, только объём 0,3","Он на овсяном молоке"],a:0,why:"Флет уайт — более крепкий кофейно-молочный напиток с тонкой пеной и объемом 0,2. Капучино — сбалансированный, латте — более молочный."},
+ {q:"Какао сладкое?",cat:"coffee",opts:["Сахар добавляем по желанию — сейчас уточню, как вам","Да, всегда сладкое","Нет, сахар не добавляем","Там только какао и вода"],a:0,why:"Какао — перетертые перуанские какао бобы и порция молока. Про сахар всегда уточняем."},
+ {q:"Айс латте — там двойной эспрессо?",cat:"cold",opts:["Нет, одинарный эспрессо, молоко и лёд","Да, двойной","Тройной, поэтому крепкий","Это фильтр кофе со льдом"],a:0,why:"Айс латте — ОДИНАРНЫЙ эспрессо, молоко, лед. Двойной — в бамбле и эспрессо-тонике."},
+ {q:"Бамбл — это что вообще?",cat:"cold",opts:["Двойной эспрессо с апельсиновым фрешем и льдом, кисло-сладкий. Карамель добавить?","Эспрессо с тоником и лаймом","Холодный кофе с манго","Холодный фильтр с апельсиновым соусом"],a:0,why:"Бамбл — двойной эспрессо, апельсиновый фреш, лед; карамель опционально, про неё уточняем."},
+ {q:"Есть у вас что-то вроде фанты?",cat:"signature",opts:["Лимонад смородина-апельсин","Японская кола","Бразильский лимонад","Бамбл"],a:0,why:"Лимонад смородина-апельсин — ягодно-апельсиновый, с яркой кислинкой, «фанта на максималках»."},
+ {q:"Мне говорили, у вас есть напиток со вкусом лимонного печенья?",cat:"signature",opts:["Цитрусовый айс латте","Бразильский лимонад","Айс чай лимон-ваниль","Гречишный чай"],a:0,why:"Цитрусовый айс латте — шот эспрессо, лимонный и лаймовый кордиалы, сгущенка, овсяное молоко. Напоминает лимонное овсяное печенье."},
+ {q:"Матча тоник и эспрессо-тоник — в чём разница?",cat:"cold",opts:["Матча тоник более цитрусово-чайный, на матче с индиан тоником","Матча тоник слаще и с молоком","Разницы нет, кроме цвета","Матча тоник без лайма"],a:0,why:"Матча тоник — шот матча, лед, тоник, лайм. Холодная освежающая матча с индиан тоником, более цитрусово-чайный, чем эспрессо-тоник."},
+ {q:"Хочу чёрный чай с бергамотом.",cat:"tea",opts:["Эрл грей","Ассам","Да хун пао","Граф Орлов"],a:0,why:"Эрл грей — черный с бергамотом. Ассам — просто черный; Граф Орлов — черный с лепестками василька, шафрана, малиной и смородиной."},
+ {q:"Есть чай со вкусом шоколада или печенья?",cat:"tea",opts:["Гречишный чай","Да хун пао","Жень шень","Травяной чай"],a:0,why:"Гречишный чай — чай из гранул татарской гречихи, обладает вкусом шоколада и печенья."},
+ {q:"Хочу смузи, но без сахара — так можно?",cat:"smoothie",opts:["Да, фиолетовый смузи — можем убрать сахарный сироп","Нет, сахар во всех смузи обязательный","Только оранжевый, он без сахара","Смузи у нас всегда без сахара"],a:0,why:"Фиолетовый смузи — смородина, вишня, кокосовое молоко, банан, сахарный сироп. Сахар можем убрать по желанию."},
+ {q:"Какой смузи поплотнее и потропичнее?",cat:"smoothie",opts:["Оранжевый смузи","Фиолетовый смузи","Крими манго матча латте","Бразильский лимонад"],a:0,why:"Оранжевый смузи — морковь, яблоко, банан, кокосовое молоко, пюре манго. Более плотный, со сладко-тропическими нотами."},
+ {q:"Что за чай «Граф Орлов»?",cat:"tea",opts:["Черный чай с лепестками василька и шафрана, малиной и смородиной","Улун с цветочными оттенками","Зеленый освежающий чай","Микс всех трав"],a:0,why:"Граф Орлов — черный чай, лепестки василька, лепестки шафрана, малина и смородина."},
+ {q:"Посоветуйте чай с цветочными нотами.",cat:"tea",opts:["Жень шень","Ассам","Те Гуань инь","Гречишный чай"],a:0,why:"Жень шень — улун с цветочными оттенками."},
+ {q:"Хочу плотный чай, землистый, с карамельными нотами.",cat:"tea",opts:["Да хун пао","Эрл грей","Те Гуань инь","Жень шень"],a:0,why:"Да хун пао — китайский, плотный, слегка землянистый и карамельный."},
+ {q:"Какой сорт кофе у вас сегодня в эспрессо?",cat:"coffee",opts:["Сорт часто меняется — уточню на баре","Всегда бразильский","Всегда эфиопский","Смесь арабики и робусты"],a:0,why:"Для эспрессо и фильтра сорт кофе часто меняется — уточнять на баре."},
+ {q:"Бразильский лимонад — это что?",cat:"signature",opts:["Сливочный лимонад со сгущенкой, лаймовым кордиалом и газировкой, с лаймовой кислинкой","Лимонад с апельсиновым фрешем и смородиной","Пряная кола с лимоном","Холодный чай с манго"],a:0,why:"Бразильский лимонад — сгущенка, лаймовый кордиал (менее сладкий сироп), газировка, лайм. Сливочная текстура и лаймовая кислинка."},
+ {q:"Кола у вас есть?",cat:"signature",opts:["Есть японская кола: самодельный сироп из специй, цитрусов и двух видов сахара, лимонный сок и газировка","Нет, только лимонады","Есть обычная кола в бутылке","Есть, это тоник с карамелью"],a:0,why:"Японская кола — хэндмейд сироп из специй, цитрусов, тростникового сахара и мусковадо + лимонный сок + газированная вода. Яркий пряно-цитрусовый лимонад."},
+ {q:"Что-нибудь с манго и матчей?",cat:"signature",opts:["Крими манго матча латте","Айс матча латте","Оранжевый смузи","Матча тоник"],a:0,why:"Крими манго матча латте — сгущенка, лаймовый кордиал, матча шот, кокосовое молоко, соус из манго. Сливочная матча на кокосовом молоке с ярким вкусом манго."},
+ {q:"Холодный кофе, но без молока и не газированный?",cat:"signature",opts:["Фильтр красный апельсин","Айс латте","Эспрессо-тоник","Цитрусовый айс латте"],a:0,why:"Фильтр красный апельсин — фильтр кофе, лед, соус из красного апельсина. Холодный фильтр с соусом из сицилийского апельсина."},
+ {q:"А матча — это вообще что?",cat:"coffee",opts:["Японская церемониальная матча — перетертые спелые чайные листья. Делаем латте, шот или матча американо","Зеленый порошок из водорослей","Японский кофе","Улун с молоком"],a:0,why:"Матча латте — японская церемониальная матча (перетертые спелые чайные листья) с молоком. Можем приготовить матча шот или матча американо."},
+ {q:"Какой холодный чай у вас на зелёном чае?",cat:"signature",opts:["Айс чай лимон-ваниль","Айс чай персик-мед-жасмин","Гречишный чай","Матча тоник"],a:0,why:"Айс чай лимон-ваниль — лимонный кордиал с ванилью, те гуань инь, пена из манго. Яркий лимонно-ванильный чай на основе зеленого чая."},
+ {q:"Айс чай персик-мед-жасмин — какой он по вкусу?",cat:"signature",opts:["Холодный цветочный чай со вкусом медового персика, сверху пена из манго","Кислый лимонный чай с ванилью","Крепкий черный чай с персиком","Молочный чай с медом"],a:0,why:"Айс чай персик-мед-жасмин — чай жасмин, сироп из персика, лаймовый кордиал, медовый сироп. Украшен пеной из манго."},
+ {q:"В раф обычную карамель добавляете?",cat:"coffee",opts:["Соленую карамель","Обычную сладкую","Карамельный сироп по желанию","Карамели в рафе нет"],a:0,why:"Раф — эспрессо, жирные сливки, молоко, соленая карамель."},
+ {q:"Цитрусовый айс латте — на каком молоке?",cat:"signature",opts:["На овсяном","На кокосовом","На обычном","На миндальном"],a:0,why:"Цитрусовый айс латте — шот эспрессо, лимонный кордиал, сгущенка, лаймовый кордиал, овсяное молоко."},
+ {q:"Те Гуань инь — это чёрный чай?",cat:"tea",opts:["Нет, японский зеленый освежающий чай","Да, черный с бергамотом","Это улун","Это травяной микс"],a:0,why:"Те Гуань инь — японский зеленый освежающий чай. Он же — основа айс чая лимон-ваниль."},
+ {q:"Что такое травяной чай у вас?",cat:"tea",opts:["Микс всех трав","Ромашка","Мята с мелиссой","Гречиха"],a:0,why:"Травяной чай — микс всех трав."}
+];
+
+const SELFCHECK = [
+ {q:"Чем флет уайт отличается по описанию от капучино и латте?",a:"Флет уайт — более крепкий кофейно-молочный напиток с тонкой пеной, объем 0,2. Капучино — сбалансированный, латте — более молочный."},
+ {q:"Как презентовать раф гостю?",a:"Сливочный, нежный кофейный напиток с соленой карамелью — как сладкий десерт в жидком виде."},
+ {q:"Что обязательно уточнять при заказе какао?",a:"Сахар. Всегда уточняем."},
+ {q:"Из чего состоит фиолетовый смузи?",a:"Смородина, вишня, кокосовое молоко, банан, сахарный сироп (сахар можем убрать по желанию)."},
+ {q:"Что входит в бамбл и что нужно уточнить у гостя?",a:"Двойной эспрессо, апельсиновый фреш, лед. Уточняем про карамель — она опционально."},
+ {q:"Чем матча тоник описывается по сравнению с эспрессо-тоником?",a:"Более цитрусово-чайный; холодная освежающая матча с индиан тоником."},
+ {q:"Какой напиток напоминает лимонное овсяное печенье?",a:"Цитрусовый айс латте."},
+ {q:"Какой лимонад сравнивается с «фантой на максималках»?",a:"Лимонад смородина-апельсин."},
+ {q:"Как описывается айс чай персик-мед-жасмин?",a:"Холодный цветочный чай со вкусом медового персика, украшенный пеной из манго."}
+];
+
+/* ---------- STATE ---------- */
+const KEY="pure-bistro-drinks-v1";
+let S={known:{},errors:{},bestQuiz:null,bestGuest:null,rounds:0};
+try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+const view=document.getElementById("view");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const pick=(a,n)=>shuffle(a).slice(0,n);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const KEYS=["1","2","3","4","5","6"];
+
+function renderProgress(){
+  const known=Object.values(S.known).filter(Boolean).length;
+  const weak=Object.values(S.errors).filter(n=>n>0).length;
+  document.getElementById("progress").innerHTML=`Выучено <b>${known}</b>/${D.length}`+(weak?` · к повтору <b>${weak}</b>`:"");
+}
+function compHTML(d){return `<div class="comp"><span class="k">Состав</span>${esc(d.comp)}</div>`+(d.desc?`<div class="desc"><span class="k">Гостю</span>${esc(d.desc)}</div>`:"")+(d.note?`<div class="note">${esc(d.note)}</div>`:"");}
+
+/* ---------- ROUTER ---------- */
+let mode="browse";
+document.getElementById("nav").addEventListener("click",e=>{const t=e.target.closest(".tab");if(!t)return;setMode(t.dataset.mode);});
+function setMode(m){mode=m;document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.mode===m));window.scrollTo({top:0});renderProgress();({browse,cards,quiz,guest,check})[m]();}
+
+/* ---------- BROWSE ---------- */
+function browse(){
+  view.innerHTML=`<p class="lede">Все ${D.length} напитков: состав, что сказать гостю и на что обратить внимание. Начни отсюда, потом переходи к карточкам и квизу.</p>
+  <input class="search" id="q" type="search" placeholder="Найти: напиток, ингредиент, слово из описания…" autocomplete="off">
+  <div id="list"></div>`;
+  const list=view.querySelector("#list"),q=view.querySelector("#q");
+  const draw=()=>{
+    const s=q.value.trim().toLowerCase();
+    const f=D.filter(d=>!s||[d.name,d.comp,d.desc||"",d.note||""].join(" ").toLowerCase().includes(s));
+    if(!f.length){list.innerHTML=`<div class="empty">Ничего не нашлось по «${esc(q.value)}»</div>`;return;}
+    list.innerHTML=Object.keys(CATS).map(c=>{
+      const items=f.filter(d=>d.cat===c);if(!items.length)return "";
+      return `<section class="group" data-cat="${c}"><div class="group-head"><h2>${CATS[c].name}</h2><span class="n">${items.length}</span></div>
+      ${items.map(d=>`<article class="drink"><h3>${esc(d.name)}</h3>${compHTML(d)}</article>`).join("")}</section>`;
+    }).join("");
+  };
+  q.addEventListener("input",draw);draw();
+}
+
+/* ---------- FLASHCARDS ---------- */
+let cardFilter="all";
+function cards(){
+  const filters=[["all","Все"],...Object.keys(CATS).map(c=>[c,CATS[c].name]),["weak","Только к повтору"]];
+  view.innerHTML=`<p class="lede">Прочитай название, вспомни состав, нажми на карточку и проверь себя. «Знаю» убирает карточку в выученные, «Ещё повторю» вернёт её через пару карточек.</p>
+  <div class="chips" id="filters">${filters.map(([k,n])=>`<button class="chip" data-f="${k}" aria-pressed="${k===cardFilter}">${n}</button>`).join("")}</div><div id="deckwrap"></div>`;
+  view.querySelector("#filters").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cardFilter=b.dataset.f;cards();});
+  let base=cardFilter==="all"?D:cardFilter==="weak"?D.filter(d=>S.errors[d.id]>0||!S.known[d.id]):D.filter(d=>d.cat===cardFilter);
+  // сначала невыученные, потом выученные
+  let deck=[...shuffle(base.filter(d=>!S.known[d.id])),...shuffle(base.filter(d=>S.known[d.id]))];
+  const total=deck.length;let done=0,side="front";
+  const wrap=view.querySelector("#deckwrap");
+  const draw=()=>{
+    if(!deck.length){wrap.innerHTML=`<div class="result"><div class="big">${total}<small> / ${total}</small></div><p>${total?"Колода пройдена. Выученные карточки уходят в конец, те, что «ещё повторю», всплывают снова.":"В этом фильтре карточек нет — все выучены и без ошибок."}</p><div class="row"><button class="btn primary" id="again">Ещё раз</button><button class="btn" id="toquiz">Перейти к квизу</button></div></div>`;
+      wrap.querySelector("#again").onclick=cards;wrap.querySelector("#toquiz").onclick=()=>setMode("quiz");return;}
+    const d=deck[0];
+    wrap.innerHTML=`<div class="card" data-cat="${d.cat}" data-side="${side}" tabindex="0" role="button" aria-label="Перевернуть карточку">
+      <div class="top"><span class="cat">${CATS[d.cat].name}</span><span class="count">${done+1} / ${total}${S.known[d.id]?" · выучено":""}</span></div>
+      ${side==="front"?`<h2>${esc(d.name)}</h2><div class="front-hint">Вспомни состав и как описать гостю → нажми, чтобы проверить</div>`
+      :`<h2>${esc(d.name)}</h2><div class="back">${compHTML(d)}</div>`}
+    </div>
+    <div class="actions">${side==="front"?`<button class="btn primary" id="flip">Показать состав</button>`:
+      `<button class="btn bad" id="no">Ещё повторю</button><button class="btn good" id="yes">Знаю</button>`}</div>`;
+    const card=wrap.querySelector(".card");
+    const flip=()=>{side=side==="front"?"back":"front";draw();};
+    card.onclick=flip;card.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip();}};
+    if(side==="front")wrap.querySelector("#flip").onclick=flip;
+    else{
+      wrap.querySelector("#yes").onclick=()=>{S.known[d.id]=true;save();renderProgress();deck.shift();done++;side="front";draw();};
+      wrap.querySelector("#no").onclick=()=>{delete S.known[d.id];save();renderProgress();deck.shift();deck.splice(Math.min(3,deck.length),0,d);side="front";draw();};
+    }
+  };
+  draw();
+}
+
+/* ---------- QUIZ GENERATORS ---------- */
+const norm=s=>s.toLowerCase().replace(/\s*\(.*?\)\s*/g,"").replace("газировка","газированная вода").replace(/^(шот|одинарный|двойной)\s+/,"").replace(/^матча шот$/,"матча").replace(/^шот матча$/,"матча").trim();
+const isContrast=(a,b)=>{const p=["одинарный эспрессо","двойной эспрессо"];return p.includes(a.toLowerCase())&&p.includes(b.toLowerCase())&&a!==b;};
+const ALL_INGS=[...new Map(D.flatMap(d=>d.ings||[]).map(i=>[i.toLowerCase(),i])).values()];
+function distractorIngs(d,n){
+  const own=d.ings.map(norm);
+  const pool=ALL_INGS.filter(i=>!d.ings.some(o=>o.toLowerCase()===i.toLowerCase())&&(!own.includes(norm(i))||d.ings.some(o=>isContrast(o,i))));
+  // сначала — из той же категории (сложнее), потом любые
+  const sameCat=pool.filter(i=>D.some(o=>o.cat===d.cat&&o.id!==d.id&&(o.ings||[]).includes(i)));
+  const uniq=a=>[...new Map(a.map(x=>[norm(x),x])).values()];
+  return uniq([...shuffle(sameCat),...shuffle(pool)]).slice(0,n);
+}
+function otherDrinks(d,n,f){
+  const same=D.filter(o=>o.id!==d.id&&o.cat===d.cat&&f(o)),rest=D.filter(o=>o.id!==d.id&&o.cat!==d.cat&&f(o));
+  return [...shuffle(same),...shuffle(rest)].slice(0,n);
+}
+function qCompName(d){ // Что входит в X?
+  const seen=new Set([d.comp]);const others=otherDrinks(d,3,o=>{if(seen.has(o.comp))return false;seen.add(o.comp);return true;});
+  const opts=shuffle([d,...others].map(o=>o.comp));
+  return {type:"mc",drink:d,title:`Что входит в «${d.name}»?`,sub:CATS[d.cat].name,opts,a:opts.indexOf(d.comp)};
+}
+function qDescName(d){ // По описанию — какой напиток
+  const others=otherDrinks(d,3,()=>true); // напитки с тем же составом (капучино/латте/флет) — лучшие дистракторы
+  const opts=shuffle([d,...others].map(o=>o.name));
+  return {type:"mc",drink:d,title:"Какой это напиток?",sub:CATS[d.cat].name,quote:d.desc,opts,a:opts.indexOf(d.name)};
+}
+function qOdd(d){ // Что лишнее
+  const extra=distractorIngs(d,1)[0];const opts=shuffle([...d.ings,extra]);
+  return {type:"mc",drink:d,title:`Что лишнее в составе «${d.name}»?`,sub:"Один ингредиент здесь из другого напитка",opts,a:opts.indexOf(extra)};
+}
+function qCompose(d){ // Собери состав
+  const n=d.ings.length>=5?3:4;const pool=shuffle([...d.ings,...distractorIngs(d,n)]);
+  return {type:"compose",drink:d,title:`Собери состав «${d.name}»`,sub:`Выбери все ингредиенты — их ${d.ings.length}`,pool};
+}
+function makeRound(n,onlyWeak){
+  let src=onlyWeak?D.filter(d=>S.errors[d.id]>0):D;if(src.length<3)src=D;
+  const drinks=[];while(drinks.length<n){drinks.push(...shuffle(src));}
+  return drinks.slice(0,n).map((d,i)=>{
+    const types=[];
+    types.push(()=>qCompName(d));
+    if(d.desc&&d.desc!==d.comp)types.push(()=>qDescName(d));
+    if(d.ings&&d.ings.length>=3)types.push(()=>qOdd(d));
+    if(d.ings&&d.ings.length>=2)types.push(()=>qCompose(d),()=>qCompose(d));
+    return types[Math.floor(Math.random()*types.length)]();
+  });
+}
+
+/* ---------- QUIZ RUNNER ---------- */
+function runQuiz({items,label,onEnd,mistakeText}){
+  let i=0,score=0;const mistakes=[];
+  const step=()=>{
+    if(i>=items.length){onEnd(score,mistakes);return;}
+    const it=items[i];
+    view.innerHTML=`<div class="qhead"><span>${label} · ${i+1} из ${items.length}</span><span>Верно: ${score}</span></div>
+    <div class="bar"><i style="width:${i/items.length*100}%"></i></div>
+    <div data-cat="${it.drink?it.drink.cat:(it.cat||"")}">
+      ${it.quote?`<blockquote class="quote"><span class="who">${it.who||"Из описания"}</span>${esc(it.quote)}</blockquote>`:""}
+      <h2 class="question">${esc(it.title)}</h2>${it.sub?`<p class="qsub">${esc(it.sub)}</p>`:""}
+      <div id="body"></div><div id="fb"></div><div id="next"></div>
+    </div>`;
+    const body=view.querySelector("#body"),fb=view.querySelector("#fb"),nx=view.querySelector("#next");
+    const finish=(ok,extraHTML)=>{
+      if(ok)score++;else mistakes.push(it);
+      if(it.drink){if(ok){if(S.errors[it.drink.id]>0)S.errors[it.drink.id]--;}else S.errors[it.drink.id]=(S.errors[it.drink.id]||0)+1;save();renderProgress();}
+      fb.innerHTML=`<div class="feedback" data-ok="${ok?1:0}"><div class="verdict">${ok?"Верно":"Не совсем"}</div>${extraHTML}</div>`;
+      nx.innerHTML=`<div class="actions"><button class="btn primary" id="go">${i+1<items.length?"Дальше":"К результату"}</button></div>`;
+      const go=()=>{i++;step();};view.querySelector("#go").onclick=go;view.querySelector("#go").focus();
+      document.onkeydown=e=>{if(e.key==="Enter"){document.onkeydown=null;go();}};
+    };
+    if(it.type==="mc"){
+      body.innerHTML=`<div class="options">${it.opts.map((o,k)=>`<button class="opt" data-k="${k}"><span class="key">${KEYS[k]}</span><span>${esc(o)}</span></button>`).join("")}</div>`;
+      const choose=k=>{
+        const btns=[...body.querySelectorAll(".opt")];btns.forEach(b=>b.disabled=true);
+        btns[it.a].dataset.state="right";if(k!==it.a)btns[k].dataset.state="wrong";btns.forEach((b,j)=>{if(j!==it.a&&j!==k)b.dataset.state="dim";});
+        finish(k===it.a,it.why?`<div>${esc(it.why)}</div>`:compHTML(it.drink));
+      };
+      body.onclick=e=>{const b=e.target.closest(".opt");if(b&&!b.disabled)choose(+b.dataset.k);};
+      document.onkeydown=e=>{const k=KEYS.indexOf(e.key);if(k>-1&&k<it.opts.length){document.onkeydown=null;choose(k);}};
+    }else{ // compose
+      const sel=new Set();
+      body.innerHTML=`<div class="ings">${it.pool.map((p,k)=>`<button class="ing" data-k="${k}" aria-pressed="false">${esc(p)}</button>`).join("")}</div><div class="actions"><button class="btn primary" id="chk" disabled>Проверить</button></div>`;
+      const chk=body.querySelector("#chk");
+      body.onclick=e=>{const b=e.target.closest(".ing");if(!b||b.disabled)return;const k=+b.dataset.k;sel.has(k)?sel.delete(k):sel.add(k);b.setAttribute("aria-pressed",sel.has(k));chk.disabled=!sel.size;};
+      chk.onclick=()=>{
+        const correct=new Set(it.drink.ings);let ok=true;
+        body.querySelectorAll(".ing").forEach(b=>{const k=+b.dataset.k,isC=correct.has(it.pool[k]),s=sel.has(k);b.disabled=true;
+          if(isC&&s)b.dataset.state="right";else if(!isC&&s){b.dataset.state="wrong";ok=false;}else if(isC&&!s){b.dataset.state="missed";ok=false;}else b.style.opacity=.4;});
+        chk.remove();finish(ok,compHTML(it.drink));
+      };
+      document.onkeydown=null;
+    }
+  };
+  step();
+}
+function resultScreen({score,total,mistakes,best,onAgain,onWeak,againLabel}){
+  document.onkeydown=null;
+  view.innerHTML=`<div class="result"><div class="eyebrow">Результат</div><div class="big">${score}<small> / ${total}</small></div>
+  <p>${score===total?"Чисто. Так и рассказывай гостям.":score>=total*0.7?"Хорошо. Осталось добить несколько напитков.":"Есть над чем поработать — открой карточки к повтору."}${best!=null?` Лучший результат: ${best} / ${total}.`:""}</p>
+  ${mistakes.length?`<div class="eyebrow" style="text-align:left;margin-bottom:8px">Разобрать</div><div class="mistakes">${mistakes.map(m=>`<div class="m" data-cat="${m.drink?m.drink.cat:m.cat}">${m.drink?`<b>${esc(m.drink.name)}</b><div class="comp">${esc(m.drink.comp)}</div>${m.drink.desc?`<div class="desc" style="font-size:14px">${esc(m.drink.desc)}</div>`:""}`:`<b>${esc(m.quote)}</b><div class="desc" style="font-size:14px">${esc(m.why)}</div>`}</div>`).join("")}</div>`:""}
+  <div class="row"><button class="btn primary" id="again">${againLabel||"Ещё раунд"}</button>${onWeak?`<button class="btn" id="weak">Только мои ошибки</button>`:""}</div></div>`;
+  view.querySelector("#again").onclick=onAgain;if(onWeak)view.querySelector("#weak").onclick=onWeak;
+}
+
+/* ---------- QUIZ ---------- */
+function quiz(){
+  document.onkeydown=null;
+  const weak=D.filter(d=>S.errors[d.id]>0);
+  view.innerHTML=`<p class="lede">10 вопросов на раунд: что входит в напиток, угадай по описанию, найди лишний ингредиент, собери состав. Ошибки запоминаются — их можно прогнать отдельно.</p>
+  <div class="stats"><div class="stat"><div class="v">${S.bestQuiz==null?"—":S.bestQuiz+"/10"}</div><div class="l">лучший раунд</div></div><div class="stat"><div class="v">${S.rounds}</div><div class="l">раундов сыграно</div></div><div class="stat"><div class="v">${weak.length}</div><div class="l">напитков к повтору</div></div></div>
+  ${weak.length?`<div class="eyebrow" style="margin-bottom:8px">Чаще всего ошибаюсь</div><div class="weak">${weak.sort((a,b)=>S.errors[b.id]-S.errors[a.id]).slice(0,6).map(d=>`<div class="w" data-cat="${d.cat}"><span>${esc(d.name)}</span><span class="e">${S.errors[d.id]} ${S.errors[d.id]===1?"ошибка":S.errors[d.id]<5?"ошибки":"ошибок"}</span></div>`).join("")}</div>`:""}
+  <div class="row"><button class="btn primary" id="start">Начать раунд</button>${weak.length>=3?`<button class="btn" id="startweak">Только мои ошибки</button>`:""}</div>
+  <p class="hint" style="margin-top:14px">Подсказка: варианты можно выбирать клавишами 1–5, «Дальше» — Enter.</p>`;
+  const go=onlyWeak=>runQuiz({items:makeRound(10,onlyWeak),label:onlyWeak?"Мои ошибки":"Квиз",onEnd:(score,mistakes)=>{
+    S.rounds++;if(!onlyWeak&&(S.bestQuiz==null||score>S.bestQuiz))S.bestQuiz=score;save();
+    resultScreen({score,total:10,mistakes,best:S.bestQuiz,onAgain:()=>go(false),onWeak:D.some(d=>S.errors[d.id]>0)?()=>go(true):null});
+  }});
+  view.querySelector("#start").onclick=()=>go(false);const w=view.querySelector("#startweak");if(w)w.onclick=()=>go(true);
+}
+
+/* ---------- GUEST ---------- */
+function guest(){
+  document.onkeydown=null;
+  view.innerHTML=`<p class="lede">Гость задаёт вопрос — выбери, что ответить. Все ответы взяты из описаний напитков, так что заодно запомнишь формулировки.</p>
+  <div class="stats"><div class="stat"><div class="v">${S.bestGuest==null?"—":S.bestGuest+"/10"}</div><div class="l">лучший результат</div></div><div class="stat"><div class="v">${GUEST.length}</div><div class="l">вопросов в базе</div></div><div class="stat"><div class="v">10</div><div class="l">за раунд</div></div></div>
+  <div class="row"><button class="btn primary" id="start">Начать</button></div>`;
+  const go=()=>{
+    const items=pick(GUEST,10).map(g=>{const opts=shuffle(g.opts);return {type:"mc",cat:g.cat,title:"Что ответить?",quote:g.q,who:"Гость",opts,a:opts.indexOf(g.opts[g.a]),why:g.why};});
+    runQuiz({items,label:"Гость спрашивает",onEnd:(score,mistakes)=>{if(S.bestGuest==null||score>S.bestGuest)S.bestGuest=score;save();
+      resultScreen({score,total:10,mistakes,best:S.bestGuest,onAgain:go,againLabel:"Ещё 10 вопросов"});}});
+  };
+  view.querySelector("#start").onclick=go;
+}
+
+/* ---------- SELF-CHECK ---------- */
+function check(){
+  document.onkeydown=null;
+  view.innerHTML=`<p class="lede">Девять вопросов из учебного файла. Сначала ответь про себя, потом открой ответ.</p>
+  <div id="sc">${SELFCHECK.map((s,i)=>`<div class="sc" data-open="0"><div class="q"><span class="num">${i+1}</span><span>${esc(s.q)}</span></div><button class="reveal">Показать ответ</button><div class="a">${esc(s.a)}</div></div>`).join("")}</div>
+  <div class="row" style="margin-top:28px"><button class="btn" id="all">Открыть все</button><button class="reset" id="reset">Сбросить весь прогресс</button></div>`;
+  view.querySelector("#sc").addEventListener("click",e=>{const b=e.target.closest(".reveal");if(!b)return;const w=b.closest(".sc");const o=w.dataset.open==="1";w.dataset.open=o?"0":"1";b.textContent=o?"Показать ответ":"Скрыть ответ";});
+  view.querySelector("#all").onclick=()=>view.querySelectorAll(".sc").forEach(w=>{w.dataset.open="1";w.querySelector(".reveal").textContent="Скрыть ответ";});
+  view.querySelector("#reset").onclick=()=>{S={known:{},errors:{},bestQuiz:null,bestGuest:null,rounds:0};save();renderProgress();check();};
+}
+
+setMode("browse");
+</script>
+
+</body>
+</html>
